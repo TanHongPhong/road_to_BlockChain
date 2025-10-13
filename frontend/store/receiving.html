@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nhập hàng vào kho</title>
+</head>
+<body>
+  <h2>Ghi nhận lô hàng mới</h2>
+  <form>
+    <label>Store_ID</label>
+    <input type="text" name="store_ID" required />
+
+    <label>Batch_ID</label>
+    <input type="text" name="Batch_ID" required />
+
+    <label>Shipment_ID</label>
+    <input type="text" name="shipment_ID" />
+
+    <label>Package_ID</label>
+    <input type="text" name="Package_ID" />
+
+    <label>Người nhận (store_account_ID)</label>
+    <input type="text" name="store_account_ID" />
+
+    <label>Thời gian nhận</label>
+    <input type="datetime-local" name="receive_time" />
+
+    <label>Trạng thái</label>
+    <select name="status">
+      <option value="received">Đã nhận</option>
+      <option value="pending">Đang chờ</option>
+      <option value="rejected">Từ chối</option>
+    </select>
+
+    <button type="submit">Lưu</button>
+  </form>
+</body>
+</html>
