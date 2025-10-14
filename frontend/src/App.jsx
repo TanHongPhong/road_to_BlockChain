@@ -11,6 +11,7 @@ import TransportCompanies from "./pages/TransportCompanies.jsx";
 import VehicleList from "./pages/VehicleList.jsx";
 import OrderTrackingCustomner from "./pages/OrderTrackingCustomer.jsx";
 import Supplier from "./pages/Supplier.jsx";
+import TemperatureDashboard from "./pages/TemperatureDashboard.jsx";
 
 export default function App() {
   return (
@@ -24,6 +25,10 @@ export default function App() {
         <Route path="/payment-qr" element={<PaymentQR />} />
         <Route path="/order-tracking" element={<OrderTracking />} />
         <Route path="/warehouse-in-out" element={<WarehouseInOut />} />
+        <Route
+          path="/temperature-dashboard"
+          element={<TemperatureDashboard />}
+        />
         <Route
           path="/order-tracking-customer"
           element={<OrderTrackingCustomner />}
