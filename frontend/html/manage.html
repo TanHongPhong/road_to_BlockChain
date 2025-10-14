@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FruitFlow - Quản lý sản phẩm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gradient-to-br from-blue-50 to-white min-h-screen flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg flex flex-col justify-between p-5">
+      <div>
+        <h1 class="text-2xl font-bold text-blue-600 mb-6">FruitFlow</h1>
+        <nav class="space-y-3">
+          <a href="#" class="block p-2 rounded-lg hover:bg-blue-100 font-medium">Trang chủ</a>
+          <a href="#" class="block p-2 rounded-lg hover:bg-blue-100 font-medium">Camera giám sát</a>
+          <a href="#" class="block p-2 rounded-lg hover:bg-blue-100 font-medium text-blue-600 bg-blue-50">Quản lý sản phẩm</a>
+          <a href="#" class="block p-2 rounded-lg hover:bg-blue-100 font-medium">Nhà cung cấp</a>
+        </nav>
+      </div>
+      <button class="w-full p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Đăng xuất</button>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 p-6 flex flex-col space-y-6">
+      <!-- Header -->
+      <header class="flex justify-between items-center bg-white p-4 rounded-2xl shadow">
+        <h2 class="text-xl font-semibold text-gray-800">Quản lý sản phẩm</h2>
+        <div class="flex items-center space-x-4">
+          <input
+            type="text"
+            placeholder="Tìm kiếm sản phẩm..."
+            class="border rounded-lg px-3 py-2 w-72 focus:outline-none focus:ring focus:ring-blue-200"
+          />
+          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Thêm sản phẩm</button>
+          <img src="https://i.pravatar.cc/40" alt="user" class="w-10 h-10 rounded-full" />
+        </div>
+      </header>
+
+      <!-- Bộ lọc -->
+      <div class="bg-white p-4 rounded-2xl shadow flex items-center justify-between">
+        <div class="flex space-x-3">
+          <select class="border p-2 rounded-lg">
+            <option>Tất cả loại</option>
+            <option>Cam</option>
+            <option>Xoài</option>
+            <option>Chuối</option>
+          </select>
+          <select class="border p-2 rounded-lg">
+            <option>Tất cả trạng thái</option>
+            <option>Đã nhập kho</option>
+            <option>Đang kiểm tra</option>
+            <option>Đã xuất kho</option>
+          </select>
+        </div>
+        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Làm mới</button>
+      </div>
+
+      <!-- Bảng danh sách sản phẩm -->
+      <section class="bg-white rounded-2xl shadow overflow-hidden">
+        <table class="min-w-full text-sm text-left">
+          <thead class="bg-blue-100 text-gray-700">
+            <tr>
+              <th class="px-6 py-3 font-semibold">Ảnh</th>
+              <th class="px-6 py-3 font-semibold">Tên sản phẩm</th>
+              <th class="px-6 py-3 font-semibold">Loại</th>
+              <th class="px-6 py-3 font-semibold">Mã QR</th>
+              <th class="px-6 py-3 font-semibold">Nhà cung cấp</th>
+              <th class="px-6 py-3 font-semibold">Ngày nhập</th>
+              <th class="px-6 py-3 font-semibold">Trạng thái</th>
+              <th class="px-6 py-3 font-semibold text-center">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <tr class="hover:bg-blue-50">
+              <td class="px-6 py-3">
+                <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=60&q=60" class="rounded-lg w-12 h-12 object-cover" />
+              </td>
+              <td class="px-6 py-3 font-medium text-gray-800">Cam Sành</td>
+              <td class="px-6 py-3">Cam</td>
+              <td class="px-6 py-3 text-gray-600">QR12345</td>
+              <td class="px-6 py-3">Công ty A</td>
+              <td class="px-6 py-3">14/10/2025</td>
+              <td class="px-6 py-3">
+                <span class="bg-green-100 text-green-700 px-2 py-1 rounded-lg text-xs font-semibold">Đã nhập kho</span>
+              </td>
+              <td class="px-6 py-3 text-center space-x-2">
+                <button class="px-3 py-1 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600">Xem</button>
+                <button class="px-3 py-1 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Sửa</button>
+                <button class="px-3 py-1 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600">Xóa</button>
+              </td>
+            </tr>
+
+            <tr class="hover:bg-blue-50">
+              <td class="px-6 py-3">
+                <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?auto=format&fit=crop&w=60&q=60" class="rounded-lg w-12 h-12 object-cover" />
+              </td>
+              <td class="px-6 py-3 font-medium text-gray-800">Xoài Cát Hòa Lộc</td>
+              <td class="px-6 py-3">Xoài</td>
+              <td class="px-6 py-3 text-gray-600">QR67890</td>
+              <td class="px-6 py-3">Công ty B</td>
+              <td class="px-6 py-3">10/10/2025</td>
+              <td class="px-6 py-3">
+                <span class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded-lg text-xs font-semibold">Đang kiểm tra</span>
+              </td>
+              <td class="px-6 py-3 text-center space-x-2">
+                <button class="px-3 py-1 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600">Xem</button>
+                <button class="px-3 py-1 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">Sửa</button>
+                <button class="px-3 py-1 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600">Xóa</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Cảnh báo hệ thống -->
+      <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 p-3 rounded-xl shadow-sm text-sm flex items-center space-x-2">
+        ⚠️ Lưu ý: Một số lô hàng chưa được xác nhận thông tin từ nhà cung cấp.
+      </div>
+    </main>
+  </body>
+</html>
