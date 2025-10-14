@@ -228,7 +228,7 @@ export default function WarehouseInOut() {
                 Quản lý nhập / xuất kho
               </h2>
               <p className="text-slate-600">
-                Theo dõi real-time, KPI & công suất kho.
+                Theo dõi real-time, QR check-in/out, KPI & công suất kho.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2">
@@ -351,9 +351,9 @@ export default function WarehouseInOut() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
             {/* Left 2/3 */}
-            <section className="w-full space-y-4">
+            <section className="xl:col-span-2 space-y-4">
               {/* Data Table */}
               <div className="rounded-2xl bg-white border border-slate-200 shadow-soft overflow-hidden">
                 <div className="px-5 md:px-6 py-4 bg-gradient-to-r from-[#8CC2FF] via-[#6AA8FF] to-[#2A60FF] text-white flex items-center justify-between">
@@ -467,11 +467,11 @@ export default function WarehouseInOut() {
             </section>
 
             {/* Right 1/3: Camera QR & snapshots */}
-            <aside className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              {/* <QRCameraPanel /> */}
+            <aside className="xl:col-span-1 flex flex-col gap-5">
+              <QRCameraPanel />
 
               {/* Legend */}
-              {/* <div className="text-[11px] text-slate-600">
+              <div className="text-[11px] text-slate-600">
                 <div className="flex items-center gap-2">
                   <span className="inline-block w-3 h-3 rounded-full bg-emerald-600" />
                   <span>NHẬP HÀNG (INBOUND)</span>
@@ -480,7 +480,7 @@ export default function WarehouseInOut() {
                   <span className="inline-block w-3 h-3 rounded-full bg-amber-500" />
                   <span>XUẤT HÀNG (OUTBOUND)</span>
                 </div>
-              </div> */}
+              </div>
 
               {/* Inventory snapshot */}
               <div className="rounded-2xl p-5 border border-slate-200 bg-white">
@@ -586,7 +586,7 @@ function StatusBadge({ status }) {
 }
 
 /* =============== QR Camera (no external lib) =============== */
-{/*function QRCameraPanel() {
+function QRCameraPanel() {
   const [mode, setMode] = useState("IN"); // IN | OUT
   const [cameras, setCameras] = useState([]);
   const [currentCameraId, setCurrentCameraId] = useState(null);
@@ -817,7 +817,7 @@ function StatusBadge({ status }) {
         className="flex flex-col gap-3"
         aria-label="Khu vực camera quét mã QR nhập/xuất"
       >
- 
+        {/* Mode */}
         <div className="flex items-center gap-2">
           <span className="text-[12px] text-slate-600">Chế độ:</span>
           <div className="inline-flex rounded-xl ring-1 ring-slate-200 overflow-hidden">
@@ -846,7 +846,7 @@ function StatusBadge({ status }) {
           </div>
         </div>
 
-  
+        {/* Camera selector */}
         <div className="flex items-center gap-2">
           <span className="text-[12px] text-slate-600">Camera:</span>
           <select
@@ -876,7 +876,7 @@ function StatusBadge({ status }) {
           </button>
         </div>
 
-
+        {/* Video + overlay */}
         <div className="rounded-xl bg-slate-50 border border-slate-200 p-2">
           <div
             className="relative"
@@ -891,7 +891,7 @@ function StatusBadge({ status }) {
           </div>
         </div>
 
-
+        {/* Actions */}
         <div className="flex items-center gap-2">
           <button
             type="button"
@@ -911,6 +911,7 @@ function StatusBadge({ status }) {
           </button>
         </div>
 
+        {/* Result */}
         {lastResult && (
           <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
             <div className="text-[12px] text-emerald-700 mb-1 font-semibold">
@@ -940,4 +941,4 @@ function StatusBadge({ status }) {
       </div>
     </div>
   );
-} */}
+}
