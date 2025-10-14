@@ -13,6 +13,8 @@ import OrderTrackingCustomner from "./pages/OrderTrackingCustomer.jsx";
 import Supplier from "./pages/Supplier.jsx";
 import CameraMonitoring from "./pages/CameraMonitoring.jsx";
 import ProductManagement from "./pages/ProductManagement.jsx";
+import RoleDashboard from "./pages/RoleDashboard.jsx";
+
 
 
 export default function App() {
@@ -29,6 +31,8 @@ export default function App() {
         <Route path="/warehouse-in-out" element={<WarehouseInOut />} />
         <Route path="/supplier-camera-monitoring" element={<CameraMonitoring />} />
         <Route path="/supplier-product-management" element={<ProductManagement />} />
+        <Route path="/dashboard" element={<RoleDashboard />} />
+
         <Route
           path="/order-tracking-customer"
           element={<OrderTrackingCustomner />}
