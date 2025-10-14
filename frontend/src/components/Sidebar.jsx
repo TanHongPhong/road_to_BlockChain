@@ -1,25 +1,61 @@
-// src/components/Sidebar.jsx
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
+import feather from "feather-icons";
 
-export default function Sidebar(){
-  const items = [
-    { name: "Dashboard", to: "/" },
-    { name: "Consumer", to: "/consumer" },
-    { name: "Store", to: "/store" },
-    { name: "Inventory", to: "/inventory" },
-    { name: "Supplier", to: "/supplier" },
-  ];
+function Sidebar() {
+  useEffect(() => {
+    feather.replace();
+  }, []);
   return (
-    <aside className="w-64 bg-white shadow-lg border-r border-gray-200 hidden md:block">
-      <div className="p-4 font-bold text-xl text-blue-600">🛒 Supermarket</div>
-      <nav className="flex flex-col gap-2 p-2">
-        {items.map(i=>(
-          <NavLink key={i.to} to={i.to} className={({isActive}) => `px-4 py-2 rounded ${isActive ? 'bg-blue-100 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}>
-            {i.name}
-          </NavLink>
-        ))}
-      </nav>
+    <aside className="fixed inset-y-0 left-0 w-20 bg-white border-r border-slate-200 flex flex-col items-center gap-3 p-3">
+      <div className="mt-1 mb-1 text-center">
+        <span className="inline-grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-sky-50 to-white text-sky-600 ring-1 ring-sky-200/60 shadow-sm">
+          <i data-feather="shield" className="w-6 h-6" />
+        </span>
+        <div className="mt-1 text-[10px] font-semibold tracking-wide text-sky-700">
+          LGBT
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-4">
+        <button
+          className="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+          title="Trang chủ"
+        >
+          <i data-feather="home" />
+        </button>
+        <button
+          className="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+          title="Theo dõi vị trí"
+        >
+          <i data-feather="map" />
+        </button>
+        <button
+          className="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+          title="Lịch sử giao dịch"
+        >
+          <i data-feather="file-text" />
+        </button>
+        <button
+          className="relative w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+          title="Thông báo"
+        >
+          <i data-feather="bell" />
+          <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full" />
+        </button>
+        <button
+          className="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+          title="Người dùng"
+        >
+          <i data-feather="user" />
+        </button>
+        <button
+          className="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+          title="Cài đặt"
+        >
+          <i data-feather="settings" />
+        </button>
+      </div>
     </aside>
   );
 }
+export default Sidebar;
