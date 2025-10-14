@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -15,6 +15,83 @@ import {
   Moon,
 } from "lucide-react";
 
+/* ===================== DATA NHÚNG TRONG FILE ===================== */
+const DASHBOARD_DATA = {
+  title: "Dashboard",
+  pagesByRole: {
+    supplier: [
+      {
+        name: "Quản lý hàng hóa",
+        path: "/supplier-product-management",
+        icon: "Building2",
+      },
+      {
+        name: "Camera giám sát",
+        path: "/supplier-camera-monitoring",
+        icon: "Home",
+      },
+      {
+        name: "Đơn hàng đã xuất kho",
+        path: "/order-tracking-customer",
+        icon: "ClipboardList",
+      },
+    ],
+    transport_company: [
+      { name: "Dashboard", path: "/supplier", icon: "Truck" },
+      { name: "Theo dõi đội xe", path: "/vehicle-list", icon: "Truck" },
+      {
+        name: "Theo dõi đơn hàng",
+        path: "/order-tracking",
+        icon: "ClipboardList",
+      },
+    ],
+    driver: [{ name: "quản lý xe", path: "/vehicle-list", icon: "Truck" }],
+    warehouse: [
+      {
+        name: "Quản lý kho hàng",
+        path: "/warehouse-in-out",
+        icon: "Warehouse",
+      },
+      {
+        name: "Xuất kho",
+        path: "/warehouse-in-out",
+        icon: "Warehouse",
+      },
+      {
+        name: "Nhập kho",
+        path: "/warehouse-in-out",
+        icon: "Warehouse",
+      },
+      // { name: "QR Thanh toán", path: "/payment-qr", icon: "ClipboardList" },
+    ],
+    super_market: [
+      {
+        name: "Quản lý siêu thị",
+        path: "/warehouse-in-out",
+        icon: "Warehouse",
+      },
+      {
+        name: "Đưa hang lên kệ",
+        path: "/warehouse-in-out",
+        icon: "Warehouse",
+      },
+      {
+        name: "Nhập kho",
+        path: "/warehouse-in-out",
+        icon: "Warehouse",
+      },
+      // { name: "QR Thanh toán", path: "/payment-qr", icon: "ClipboardList" },
+    ],
+    user: [
+      { name: "Thông tin sản phẩm", path: "/product-infomation", icon: "Home" },
+      { name: "Quét QR", path: "/user-QR", icon: "Truck" },
+    ],
+  },
+};
+/* ================================================================= */
+
+const ICON_MAP = { Home, Truck, Package, Warehouse, ClipboardList, Building2 };
+
 export default function RoleDashboard() {
   const navigate = useNavigate();
   const [role, setRole] = useState("");
@@ -25,33 +102,25 @@ export default function RoleDashboard() {
     const storedRole = localStorage.getItem("role");
     if (!storedRole) navigate("/");
     else setRole(storedRole);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const rolePages = {
-    supplier: [
-      { name: "Quản lý sản phẩm", path: "/supplier", icon: <Package /> },
-      { name: "Theo dõi đơn hàng", path: "/order-tracking", icon: <ClipboardList /> },
-      { name: "Camera giám sát", path: "/supplier-camera-monitoring", icon: <Home /> },
-      { name: "Quản lý hàng hóa", path: "/supplier-product-management", icon: <Building2 /> },
-    ],
-    driver: [
-      { name: "Danh sách xe vận chuyển", path: "/vehicle-list", icon: <Truck /> },
-      { name: "Theo dõi đơn hàng", path: "/order-tracking", icon: <ClipboardList /> },
-    //   { name: "Lịch sử thanh toán", path: "/payment-history", icon: <Package /> },
-    ],
-    warehouse: [
-      { name: "Quản lý kho hàng", path: "/warehouse-in-out", icon: <Warehouse /> },
-    //   { name: "QR Thanh toán", path: "/payment-qr", icon: <ClipboardList /> },
-    ],
-    admin: [
-      { name: "Công ty vận tải", path: "/transport-companies", icon: <Truck /> },
-      { name: "Danh sách phương tiện", path: "/vehicle-list", icon: <Home /> },
-    //   { name: "Lịch sử thanh toán", path: "/payment-history", icon: <Package /> },
-      { name: "Theo dõi khách hàng", path: "/order-tracking-customer", icon: <ClipboardList /> },
-    ],
-  };
+  const pages = useMemo(() => {
+    return DASHBOARD_DATA.pagesByRole[role] || [];
+  }, [role]);
 
-  const pages = rolePages[role] || [];
+  const renderIcon = (icon) => {
+    if (!icon) return <Home />;
+    if (typeof icon === "string") {
+      const Cmp = ICON_MAP[icon] || Home;
+      return <Cmp />;
+    }
+    if (typeof icon === "function") {
+      const Cmp = icon;
+      return <Cmp />;
+    }
+    return icon; // đã là ReactNode
+  };
 
   return (
     <div className={`${darkMode ? "dark" : ""} transition-colors duration-500`}>
@@ -70,7 +139,7 @@ export default function RoleDashboard() {
                 sidebarOpen ? "opacity-100" : "opacity-0 w-0"
               }`}
             >
-              Dashboard
+              {DASHBOARD_DATA.title}
             </h1>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -81,17 +150,26 @@ export default function RoleDashboard() {
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-2">
-            {pages.map((item, i) => (
-              <motion.button
-                key={i}
-                whileHover={{ scale: 1.03 }}
-                onClick={() => navigate(item.path)}
-                className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900 text-gray-700 dark:text-gray-200 font-medium transition-all"
-              >
-                <span className="text-indigo-600 dark:text-indigo-400">{item.icon}</span>
-                {sidebarOpen && <span>{item.name}</span>}
-              </motion.button>
-            ))}
+            {pages.length === 0 ? (
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Không có trang nào cho vai trò: <b>{role || "—"}</b>
+              </div>
+            ) : (
+              pages.map((item, i) => (
+                <motion.button
+                  key={i}
+                  whileHover={{ scale: 1.03 }}
+                  onClick={() => item.path && navigate(item.path)}
+                  disabled={!item.path}
+                  className="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900 text-gray-700 dark:text-gray-200 font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span className="text-indigo-600 dark:text-indigo-400">
+                    {renderIcon(item.icon)}
+                  </span>
+                  {sidebarOpen && <span>{item.name}</span>}
+                </motion.button>
+              ))
+            )}
           </div>
 
           <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex flex-col gap-2">
@@ -99,7 +177,11 @@ export default function RoleDashboard() {
               onClick={() => setDarkMode(!darkMode)}
               className="flex items-center gap-3 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              {darkMode ? <Sun className="w-5 h-5 text-yellow-300" /> : <Moon className="w-5 h-5 text-gray-400" />}
+              {darkMode ? (
+                <Sun className="w-5 h-5 text-yellow-300" />
+              ) : (
+                <Moon className="w-5 h-5 text-gray-400" />
+              )}
               {sidebarOpen && <span>Đổi giao diện</span>}
             </button>
 
@@ -134,16 +216,21 @@ export default function RoleDashboard() {
             <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
               Xin chào, {role ? role.toUpperCase() : "Người dùng"}
             </h2>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {pages.map((item, i) => (
                 <motion.div
                   key={i}
                   whileHover={{ scale: 1.03 }}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => item.path && navigate(item.path)}
                   className="p-6 rounded-xl bg-indigo-500/10 hover:bg-indigo-600/20 dark:bg-indigo-800/30 dark:hover:bg-indigo-700/40 transition-all shadow-md cursor-pointer flex flex-col items-center justify-center"
                 >
-                  <div className="text-indigo-600 dark:text-indigo-400 mb-3">{item.icon}</div>
-                  <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">{item.name}</p>
+                  <div className="text-indigo-600 dark:text-indigo-400 mb-3">
+                    {renderIcon(item.icon)}
+                  </div>
+                  <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                    {item.name}
+                  </p>
                 </motion.div>
               ))}
             </div>

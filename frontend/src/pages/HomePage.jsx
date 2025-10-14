@@ -9,10 +9,28 @@ export default function HomePage() {
   const [role, setRole] = useState("");
 
   const roles = [
-    { id: "supplier", label: "Supplier", icon: <Building2 className="w-6 h-6" /> },
+    {
+      id: "supplier",
+      label: "Supplier",
+      icon: <Building2 className="w-6 h-6" />,
+    },
+    {
+      id: "transport_company",
+      label: "Transport company",
+      icon: <Truck className="w-6 h-6" />,
+    },
+    {
+      id: "warehouse",
+      label: "Warehouse",
+      icon: <Warehouse className="w-6 h-6" />,
+    },
+    {
+      id: "super_market",
+      label: "Super market",
+      icon: <Warehouse className="w-6 h-6" />,
+    },
+    { id: "user", label: "User", icon: <UserCog className="w-6 h-6" /> },
     { id: "driver", label: "Driver", icon: <Truck className="w-6 h-6" /> },
-    { id: "warehouse", label: "Warehouse", icon: <Warehouse className="w-6 h-6" /> },
-    { id: "admin", label: "Admin", icon: <UserCog className="w-6 h-6" /> },
   ];
 
   const handleContinue = () => {
@@ -29,7 +47,11 @@ export default function HomePage() {
             onClick={() => setDarkMode(!darkMode)}
             className="p-2 rounded-full bg-white/80 dark:bg-gray-800 shadow-md"
           >
-            {darkMode ? <Sun className="w-5 h-5 text-yellow-300" /> : <Moon className="w-5 h-5 text-gray-700" />}
+            {darkMode ? (
+              <Sun className="w-5 h-5 text-yellow-300" />
+            ) : (
+              <Moon className="w-5 h-5 text-gray-700" />
+            )}
           </button>
         </div>
 
@@ -52,13 +74,16 @@ export default function HomePage() {
                 key={r.id}
                 onClick={() => setRole(r.id)}
                 className={`flex flex-col items-center justify-center border-2 rounded-xl p-4 transition-all duration-200
-                ${role === r.id
+                ${
+                  role === r.id
                     ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-700/30"
                     : "border-gray-300 hover:border-indigo-400 dark:border-gray-600 dark:hover:border-indigo-400"
-                  }`}
+                }`}
               >
                 {r.icon}
-                <span className="mt-2 font-semibold text-gray-700 dark:text-gray-200">{r.label}</span>
+                <span className="mt-2 font-semibold text-gray-700 dark:text-gray-200">
+                  {r.label}
+                </span>
               </motion.button>
             ))}
           </div>
