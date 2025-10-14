@@ -1,82 +1,147 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giao diện giám sát Camera</title>
-    <!-- Nạp Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
-<body class="bg-gray-100 overflow-hidden">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Giám sát Camera · LGBT Transportation</title>
 
-    <div class="flex items-center justify-center min-h-screen">
-      <!-- Main container with fixed dimensions -->
-      <div class="w-[1440px] h-[900px] p-6 bg-white shadow-lg">
-        <div class="flex gap-4 h-full">
-          <!-- Left side - Camera frame (50%) -->
-          <div class="w-1/2 bg-[#1E1E1E] rounded-lg relative flex items-center justify-center">
-            <!-- Camera icon button - top right -->
-            <button class="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
-                <!-- SVG for Camera Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white">
-                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
-                    <circle cx="12" cy="13" r="3"></circle>
-                </svg>
-            </button>
-            
-            <!-- Camera placeholder content -->
-            <div class="text-center">
-                <!-- SVG for Placeholder Camera Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-gray-500 mx-auto mb-3">
-                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
-                    <circle cx="12" cy="13" r="3"></circle>
-                </svg>
-                <p class="text-gray-500">Camera Feed</p>
+    <!-- Fonts + Tailwind -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind = window.tailwind || {};
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] },
+            boxShadow: { soft: "0 8px 30px rgba(2,6,23,.08)" },
+            keyframes: {
+              in: { from: { transform: "translateY(8px)", opacity: 0 }, to: { transform: "translateY(0)", opacity: 1 } },
+            },
+            animation: { in: "in .25s ease-out both" },
+          },
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      body { font-family: Inter, ui-sans-serif, system-ui; }
+    </style>
+  </head>
+  <body class="bg-slate-50 text-slate-900">
+    <!-- Sidebar -->
+    <aside class="fixed inset-y-0 left-0 w-20 bg-white border-r border-slate-200 flex flex-col items-center gap-3 p-3">
+      <div class="mt-1 mb-1 text-center">
+        <span class="inline-grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-sky-50 to-white text-sky-600 ring-1 ring-sky-200/60 shadow-sm">
+          <i data-feather="shield" class="w-6 h-6"></i>
+        </span>
+        <div class="mt-1 text-[10px] font-semibold tracking-wide text-sky-700">LGBT</div>
+      </div>
+
+      <div class="flex flex-col items-center gap-4">
+        <button class="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50" title="Trang chủ"><i data-feather="home"></i></button>
+        <button class="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50" title="Theo dõi vị trí"><i data-feather="map"></i></button>
+        <button class="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50" title="Lịch sử giao dịch"><i data-feather="file-text"></i></button>
+        <button class="relative w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50" title="Thông báo">
+          <i data-feather="bell"></i>
+          <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+        <button class="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50" title="Người dùng"><i data-feather="user"></i></button>
+        <button class="w-10 h-10 rounded-xl grid place-items-center text-slate-400 hover:text-slate-600 hover:bg-slate-50" title="Cài đặt"><i data-feather="settings"></i></button>
+      </div>
+    </aside>
+
+    <main class="ml-20 min-h-screen flex flex-col">
+      <!-- HEADER -->
+      <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b md:py-1 bg-gradient-to-l from-blue-900 via-sky-200 to-white">
+        <div class="flex items-center justify-between px-4 md:px-5 py-2.5">
+          <div class="flex-1 max-w-2xl mr-3 md:mr-6">
+            <div class="relative">
+              <i data-feather="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+              <input class="w-full h-10 pl-9 pr-24 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-200" placeholder="Tìm kiếm camera, khu vực..." />
+              <button class="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 grid place-items-center rounded-lg border border-slate-200 hover:bg-slate-50" title="Filter">
+                <i data-feather="filter" class="w-4 h-4"></i>
+              </button>
             </div>
           </div>
 
-          <!-- Right side - Info and Warning panels (50%) -->
-          <div class="w-1/2 flex flex-col gap-4">
-            <!-- Top part - Info panel (30%) -->
-            <div class="h-[30%] bg-[#F5F5F5] rounded-lg p-6 flex flex-col">
-              <h2 class="mb-4 text-xl font-semibold text-gray-900">Thông tin</h2>
-              
-              <!-- Single white box for all info -->
-              <div class="bg-white rounded-lg p-4 text-gray-900 flex-grow space-y-2 shadow-sm">
-                <p><span class="font-medium text-gray-600">Tên:</span> Nguyễn Văn A</p>
-                <p><span class="font-medium text-gray-600">Thời gian:</span> 14:30:45 - 14/10/2025</p>
-                <p><span class="font-medium text-gray-600">Trạng thái:</span> Đang hoạt động</p>
+          <div class="flex items-center gap-2 md:gap-3">
+            <button class="h-9 w-9 rounded-lg grid place-items-center ring-1 ring-blue-200 text-blue-600 bg-white hover:bg-blue-50" title="New"><i data-feather="plus" class="w-4 h-4"></i></button>
+            <button class="h-9 w-9 rounded-lg grid bg-blue-50 place-items-center border border-slate-200 hover:bg-slate-50" title="Notifications"><i data-feather="bell" class="w-4 h-4"></i></button>
+            <button class="h-9 w-9 rounded-lg grid bg-blue-50 place-items-center border border-slate-200 hover:bg-slate-50" title="Archive"><i data-feather="archive" class="w-4 h-4"></i></button>
+            <button type="button" class="group inline-flex items-center gap-2 pl-1 pr-2 py-1.5 rounded-full bg-white text-slate-900 ring-1 ring-slate-200 hover:bg-slate-50">
+              <img src="https://i.pravatar.cc/40?img=8" alt="Avatar" class="w-8 h-8 rounded-full object-cover" />
+              <div class="text-left leading-tight hidden sm:block">
+                <div class="text-[13px] font-semibold">Harsh Vani</div>
+                <div class="text-[11px] text-slate-500 -mt-0.5">Deportation Manager</div>
               </div>
-            </div>
-
-            <!-- Bottom part - Warning panel (70%) -->
-            <div class="h-[70%] bg-[#FFE5E5] border-2 border-[#FF4D4F] rounded-lg p-6 flex flex-col justify-center">
-              <div class="flex items-start gap-4">
-                <!-- SVG for Alert Triangle Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-[#FF4D4F] flex-shrink-0 mt-1">
-                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                    <line x1="12" y1="9" x2="12" y2="13"></line>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                </svg>
-                <div>
-                  <h3 class="text-xl font-bold text-[#FF4D4F] mb-2">CẢNH BÁO</h3>
-                  <p class="text-gray-800 text-base">
-                    Phát hiện hành vi bất thường. Vui lòng kiểm tra và xác nhận ngay lập tức để đảm bảo an toàn hệ thống.
-                  </p>
-                </div>
-              </div>
-            </div>
+              <i data-feather="chevron-down" class="w-4 h-4 text-slate-400"></i>
+            </button>
           </div>
         </div>
-      </div>
-    </div>
+      </header>
 
-</body>
+      <!-- ===== CAMERA INTERFACE SECTION ===== -->
+      <section class="p-6 flex-grow flex flex-col">
+          <!-- Container for the entire camera view, mimics the card style -->
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-soft p-5 md:p-7 flex-grow flex flex-col">
+            
+              <!-- The camera interface content, set to grow and fill the container -->
+              <div class="flex gap-4 flex-grow">
+                  <!-- Left side - Camera frame (50%) -->
+                  <div class="w-1/2 bg-[#1E1E1E] rounded-lg relative flex items-center justify-center">
+                      <button class="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
+                          <i data-feather="camera" class="w-6 h-6 text-white"></i>
+                      </button>
+                      <div class="text-center">
+                          <i data-feather="camera" class="w-16 h-16 text-gray-500 mx-auto mb-3"></i>
+                          <p class="text-gray-500">Camera Feed</p>
+                      </div>
+                  </div>
+
+                  <!-- Right side - Info and Warning panels (50%) -->
+                  <div class="w-1/2 flex flex-col gap-4">
+                      <!-- Top part - Info panel (30%) with blue border -->
+                      <div class="h-[30%] bg-[#F5F5F5] rounded-lg p-6 flex flex-col min-h-0 border-2 border-blue-500">
+                          <h2 class="mb-4 text-xl font-semibold text-gray-900">Thông tin</h2>
+                          <div class="bg-white rounded-lg p-4 text-gray-900 flex-grow space-y-2 shadow-sm overflow-y-auto">
+                              <p><span class="font-medium text-gray-600">Tên:</span> Nguyễn Văn A</p>
+                              <p><span class="font-medium text-gray-600">Thời gian:</span> 14:30:45 - 14/10/2025</p>
+                              <p><span class="font-medium text-gray-600">Trạng thái:</span> Đang hoạt động</p>
+                          </div>
+                      </div>
+
+                      <!-- Bottom part - Warning panel (70%) -->
+                      <div class="h-[70%] bg-[#FFE5E5] border-2 border-[#FF4D4F] rounded-lg p-6 flex flex-col justify-center">
+                          <div class="flex items-start gap-4">
+                              <i data-feather="alert-triangle" class="w-10 h-10 text-[#FF4D4F] flex-shrink-0 mt-1"></i>
+                              <div>
+                                  <h3 class="text-xl font-bold text-[#FF4D4F] mb-2">CẢNH BÁO</h3>
+                                  <p class="text-gray-800 text-base">
+                                      Phát hiện hành vi bất thường. Vui lòng kiểm tra và xác nhận ngay lập tức để đảm bảo an toàn hệ thống.
+                                  </p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+    </main>
+
+    <script>
+      window.addEventListener("load", () => {
+        // Initialize Feather Icons
+        if (window.feather) {
+          feather.replace();
+        }
+      });
+    </script>
+  </body>
 </html>
 
