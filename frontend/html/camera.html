@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao diện giám sát Camera</title>
+    <!-- Nạp Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 overflow-hidden">
+
+    <div class="flex items-center justify-center min-h-screen">
+      <!-- Main container with fixed dimensions -->
+      <div class="w-[1440px] h-[900px] p-6 bg-white shadow-lg">
+        <div class="flex gap-4 h-full">
+          <!-- Left side - Camera frame (50%) -->
+          <div class="w-1/2 bg-[#1E1E1E] rounded-lg relative flex items-center justify-center">
+            <!-- Camera icon button - top right -->
+            <button class="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors">
+                <!-- SVG for Camera Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                    <circle cx="12" cy="13" r="3"></circle>
+                </svg>
+            </button>
+            
+            <!-- Camera placeholder content -->
+            <div class="text-center">
+                <!-- SVG for Placeholder Camera Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-16 h-16 text-gray-500 mx-auto mb-3">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                    <circle cx="12" cy="13" r="3"></circle>
+                </svg>
+                <p class="text-gray-500">Camera Feed</p>
+            </div>
+          </div>
+
+          <!-- Right side - Info and Warning panels (50%) -->
+          <div class="w-1/2 flex flex-col gap-4">
+            <!-- Top part - Info panel (30%) -->
+            <div class="h-[30%] bg-[#F5F5F5] rounded-lg p-6 flex flex-col">
+              <h2 class="mb-4 text-xl font-semibold text-gray-900">Thông tin</h2>
+              
+              <!-- Single white box for all info -->
+              <div class="bg-white rounded-lg p-4 text-gray-900 flex-grow space-y-2 shadow-sm">
+                <p><span class="font-medium text-gray-600">Tên:</span> Nguyễn Văn A</p>
+                <p><span class="font-medium text-gray-600">Thời gian:</span> 14:30:45 - 14/10/2025</p>
+                <p><span class="font-medium text-gray-600">Trạng thái:</span> Đang hoạt động</p>
+              </div>
+            </div>
+
+            <!-- Bottom part - Warning panel (70%) -->
+            <div class="h-[70%] bg-[#FFE5E5] border-2 border-[#FF4D4F] rounded-lg p-6 flex flex-col justify-center">
+              <div class="flex items-start gap-4">
+                <!-- SVG for Alert Triangle Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-[#FF4D4F] flex-shrink-0 mt-1">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                <div>
+                  <h3 class="text-xl font-bold text-[#FF4D4F] mb-2">CẢNH BÁO</h3>
+                  <p class="text-gray-800 text-base">
+                    Phát hiện hành vi bất thường. Vui lòng kiểm tra và xác nhận ngay lập tức để đảm bảo an toàn hệ thống.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
+
