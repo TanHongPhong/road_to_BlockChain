@@ -12,6 +12,9 @@ import {
   QrCode,
   MapPin,
   Phone,
+  Camera,
+  Circle,
+  Pause,
 } from "lucide-react";
 
 import { CameraCard } from "../components/monitoring/CameraCard.jsx";
@@ -26,10 +29,9 @@ export default function CameraMonitoring() {
   return (
     <div className="bg-slate-50 text-slate-900 flex min-h-screen">
       {/* ===== SIDEBAR ===== */}
-      <aside className="fixed inset-y-0 left-0 w-20 bg-white border-r border-slate-200/70 flex flex-col items-center gap-3 p-3">
+      <aside className="fixed inset-y-0 left-0 w-20 bg-white/95 border-r border-slate-200/70 flex flex-col items-center gap-3 p-3">
         <div className="mt-1 mb-1 text-center">
           <span className="inline-grid place-items-center w-14 h-14 rounded-xl bg-sky-50 text-sky-600 border border-sky-200/60">
-            {/* Logo text thay vì icon */}
             <span className="text-xs font-bold tracking-wide">LGBT</span>
           </span>
           <div className="mt-1 text-[10px] font-semibold tracking-wide text-sky-700">
@@ -37,7 +39,7 @@ export default function CameraMonitoring() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-4 mt-3">
+        <nav className="flex flex-col items-center gap-3 mt-3">
           <SidebarButton icon={<Home />} title="Trang chủ" />
           <SidebarButton icon={<Map />} title="Theo dõi vị trí" />
           <SidebarButton icon={<FileText />} title="Lịch sử giao dịch" />
@@ -47,14 +49,14 @@ export default function CameraMonitoring() {
           </div>
           <SidebarButton icon={<User />} title="Người dùng" />
           <SidebarButton icon={<Settings />} title="Cài đặt" />
-        </div>
+        </nav>
       </aside>
 
       {/* ===== MAIN CONTENT ===== */}
-      <main className="ml-20 flex-grow flex flex-col">
+      <main className="ml-20 flex-1 flex flex-col">
         {/* ===== HEADER ===== */}
-        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
-          <div className="flex items-center justify-between px-5 py-2.5">
+        <header className="h-14 sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+          <div className="h-14 flex items-center justify-between px-5">
             {/* Search */}
             <div className="flex-1 max-w-2xl mr-6">
               <div className="relative">
@@ -91,8 +93,8 @@ export default function CameraMonitoring() {
           </div>
         </header>
 
-        {/* ===== CAMERA + INFO ===== */}
-        <section className="p-6 flex-grow flex flex-col">
+        {/* ===== CONTENT ===== */}
+        <section className="flex-1 p-6">
           {/* Title Row */}
           <div className="mb-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -105,43 +107,74 @@ export default function CameraMonitoring() {
             </div>
           </div>
 
-          <div className="flex gap-6 flex-grow min-h-[420px]">
-            {/* LEFT: CAMERA — giữ tỉ lệ, luôn fit khung */}
+          <div className="flex gap-6">
+            {/* LEFT: CAMERA — sticky to keep always visible */}
             <div className="w-2/3">
-              <CameraCard className="w-full" cameraId="A01" />
+              <div className="sticky top-20">
+                <div className="rounded-2xl overflow-hidden border border-slate-200/70 bg-slate-900/90 shadow-sm">
+                  {/* When CameraCard doesn't constrain ratio, "aspect-video" keeps layout stable */}
+                  <div className="aspect-video">
+                    <CameraCard className="w-full h-full" cameraId="A01" />
+                  </div>
+                </div>
+
+                {/* Action Bar */}
+                <div className="mt-3 grid grid-cols-3 gap-3">
+                  <ToolbarButton onClick={() => setIsRecording((v) => !v)}>
+                    {isRecording ? (
+                      <>
+                        <Pause className="w-4 h-4" />
+                        Tạm dừng ghi
+                      </>
+                    ) : (
+                      <>
+                        <Camera className="w-4 h-4" />
+                        Bắt đầu ghi
+                      </>
+                    )}
+                  </ToolbarButton>
+                  <ToolbarButton>
+                    <QrCode className="w-4 h-4" />
+                    Quét QR
+                  </ToolbarButton>
+                  <ToolbarButton>
+                    <Circle className="w-4 h-4" />
+                    Snapshot
+                  </ToolbarButton>
+                </div>
+              </div>
             </div>
 
-            {/* RIGHT: INFO SECTION (gọn, không icon, ít border) */}
-            <div className="w-1/3 flex flex-col gap-4">
-              <InfoCardMinimal
-                product={{
-                  name: "Cam Sành Tiền Giang",
-                  type: "Trái cây tươi",
-                  weight: "12.4 kg",
-                  qr: "QR-985123",
-                  status: "Đang chờ kiểm định",
-                  dateIn: "14/10/2025",
-                  note: "Hàng tươi, chưa phân loại.",
-                }}
-                supplier={{
-                  name: "GreenFarm Co., Ltd",
-                  contact: "Nguyễn Văn A",
-                  address: "Tân Phước, Tiền Giang",
-                  phone: "0908 123 456",
-                }}
-              />
+            {/* RIGHT: INFO — scrollable column only */}
+            <div className="w-1/3">
+              {/* 80px = top-20 of sticky left; match so the bottoms align visually */}
+              <div className="h-[calc(100vh-80px)] overflow-y-auto pr-1">
+                <InfoCardMinimal
+                  product={{
+                    name: "Cam Sành Tiền Giang",
+                    type: "Trái cây tươi",
+                    weight: "12.4 kg",
+                    qr: "QR-985123",
+                    status: "Đang chờ kiểm định",
+                    dateIn: "14/10/2025",
+                    note: "Hàng tươi, chưa phân loại.",
+                  }}
+                  supplier={{
+                    name: "GreenFarm Co., Ltd",
+                    contact: "Nguyễn Văn A",
+                    address: "Tân Phước, Tiền Giang",
+                    phone: "0908 123 456",
+                  }}
+                />
 
-              {/* Alert tinh gọn, không icon */}
-              <div className="rounded-xl p-4 border border-rose-200 bg-rose-50 text-rose-800">
-                <div className="font-semibold mb-1">Cảnh báo</div>
-                <p className="text-[15px]">
-                  Dữ liệu chưa khớp giữa mã QR và hệ thống. Vui lòng xác minh.
-                </p>
-                <div className="mt-3">
-                  <button className="text-[12px] px-3 py-1 rounded-lg border border-rose-200 bg-white hover:bg-rose-50">
-                    Đã hiểu
-                  </button>
-                </div>
+                <AlertCard
+                  className="mt-4"
+                  tone="rose"
+                  title="Cảnh báo"
+                  message="Dữ liệu chưa khớp giữa mã QR và hệ thống. Vui lòng xác minh."
+                />
+
+                <div className="h-10" />
               </div>
             </div>
           </div>
@@ -151,7 +184,7 @@ export default function CameraMonitoring() {
   );
 }
 
-/* ===== Reusable Components (đã giản lược border/ring & icon) ===== */
+/* ===== Reusable Components ===== */
 const SidebarButton = ({ icon, title }) => (
   <button
     className="w-10 h-10 rounded-xl grid place-items-center text-slate-500 hover:text-sky-700 hover:bg-sky-50"
@@ -161,11 +194,56 @@ const SidebarButton = ({ icon, title }) => (
   </button>
 );
 
-/* Thẻ thông tin tối giản: không icon, ít border, cấu trúc 2 cột */
+const ToolbarButton = ({ children, onClick }) => (
+  <button
+    onClick={onClick}
+    className="inline-flex items-center justify-center gap-2 h-10 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-[13px] font-medium"
+  >
+    {children}
+  </button>
+);
+
+function AlertCard({ title, message, tone = "rose", className = "" }) {
+  const tones = {
+    rose: "border-rose-200 bg-rose-50 text-rose-800",
+    amber: "border-amber-200 bg-amber-50 text-amber-800",
+    sky: "border-sky-200 bg-sky-50 text-sky-800",
+  };
+  return (
+    <div className={`rounded-2xl p-4 border ${tones[tone]} ${className}`}>
+      <div className="font-semibold mb-1">{title}</div>
+      <p className="text-[15px]">{message}</p>
+      <div className="mt-3">
+        <button className="text-[12px] px-3 py-1 rounded-lg border border-current/20 bg-white/80 hover:bg-white">
+          Đã hiểu
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function SimpleCard({ title, children, className = "" }) {
+  return (
+    <section
+      className={`rounded-2xl bg-white border border-slate-200/70 shadow-sm overflow-hidden ${className}`}
+    >
+      {title ? (
+        <header className="px-5 py-3 bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/70">
+          <h3 className="text-[14px] font-semibold text-slate-900 leading-tight">
+            {title}
+          </h3>
+        </header>
+      ) : null}
+      <div className="p-5">{children}</div>
+    </section>
+  );
+}
+
+/* ===== Info Card (tối giản, 2 cột, zebra nhẹ) ===== */
 function InfoCardMinimal({ product = {}, supplier = {} }) {
   return (
     <section className="rounded-2xl bg-white border border-slate-200/70 shadow-sm overflow-hidden">
-      {/* Header: tên lô + meta ngắn gọn + badge */}
+      {/* Header */}
       <header className="px-5 py-3 bg-gradient-to-r from-slate-50 to-white border-b border-slate-200/70 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="text-[16px] font-semibold text-slate-900 leading-tight line-clamp-1">
@@ -195,9 +273,8 @@ function InfoCardMinimal({ product = {}, supplier = {} }) {
         </div>
       </header>
 
-      {/* Body: 2 phần — Sản phẩm & NCC */}
+      {/* Body */}
       <div className="p-5 space-y-5">
-        {/* Sản phẩm */}
         <SectionLabel>Thông tin sản phẩm</SectionLabel>
         <KVList
           zebra
@@ -212,7 +289,6 @@ function InfoCardMinimal({ product = {}, supplier = {} }) {
 
         <Divider />
 
-        {/* NCC */}
         <SectionLabel>Nhà cung cấp</SectionLabel>
         <KVList
           zebra
@@ -241,9 +317,7 @@ function InfoCardMinimal({ product = {}, supplier = {} }) {
   );
 }
 
-/* ===== Small UI atoms ===== */
 /* ===== Atoms ===== */
-
 const SectionLabel = ({ children }) => (
   <div className="flex items-center gap-2">
     <span className="h-4 w-1.5 rounded bg-sky-400/70" />
@@ -253,7 +327,6 @@ const SectionLabel = ({ children }) => (
 
 const Divider = () => <hr className="border-t border-slate-200/70" />;
 
-/* Key–Value list: label cố định 120px, zebra nhẹ cho dễ quét mắt */
 function KVList({ items = [], zebra = false }) {
   return (
     <dl className="rounded-lg overflow-hidden">
@@ -285,7 +358,6 @@ function KVList({ items = [], zebra = false }) {
   );
 }
 
-/* Pill gọn, nổi bật vừa đủ */
 const Pill = ({ tone = "sky", children }) => {
   const tones = {
     sky: "bg-sky-50 text-sky-700 border-sky-200",

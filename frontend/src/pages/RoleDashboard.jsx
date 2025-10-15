@@ -53,15 +53,16 @@ const DASHBOARD_DATA = {
         icon: "Warehouse",
       },
       {
-        name: "Xuất kho",
-        path: "/warehouse-in-out",
+        name: "Nhập kho",
+        path: "/camera-warehouse-in",
         icon: "Warehouse",
       },
       {
-        name: "Nhập kho",
-        path: "/warehouse-in-out",
+        name: "Xuất kho",
+        path: "/camera-warehouse-out",
         icon: "Warehouse",
       },
+
       // { name: "QR Thanh toán", path: "/payment-qr", icon: "ClipboardList" },
     ],
     super_market: [
@@ -72,12 +73,12 @@ const DASHBOARD_DATA = {
       },
       {
         name: "Đưa hang lên kệ",
-        path: "/warehouse-in-out",
+        path: "/mobile-shelf-putaway",
         icon: "Warehouse",
       },
       {
         name: "Nhập kho",
-        path: "/warehouse-in-out",
+        path: "/supermarket-receiving",
         icon: "Warehouse",
       },
       // { name: "QR Thanh toán", path: "/payment-qr", icon: "ClipboardList" },
