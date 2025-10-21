@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
+import feather from "feather-icons";
 import {
   Activity,
   FileText,
@@ -13,7 +14,7 @@ import {
 
 // GHÉP SHELL
 import Sidebar from "@/components/tracking/Sidebar";
-import Topbar from "@/components/Topbar";
+import Topbar from "@/components/tracking/Topbar";
 
 // ================== MOCK DATA ==================
 const vehiclesSeed = [
@@ -152,6 +153,24 @@ function getTemperatureStyle(temp) {
 
 // ================== PAGE ==================
 export default function TemperatureDashboard() {
+  const topbarRef = useRef(null);
+  
+  useEffect(() => {
+    feather.replace();
+    
+    // Sync CSS var for topbar height
+    const syncTopbar = () => {
+      if (topbarRef.current) {
+        document.documentElement.style.setProperty(
+          "--topbar-h",
+          `${topbarRef.current.offsetHeight}px`
+        );
+      }
+    };
+    syncTopbar();
+    window.addEventListener("resize", syncTopbar);
+    return () => window.removeEventListener("resize", syncTopbar);
+  }, []);
   const [timeRange, setTimeRange] = useState("24h");
   const [search, setSearch] = useState("");
 
@@ -285,7 +304,7 @@ export default function TemperatureDashboard() {
       {/* Cột nội dung (dịch phải bằng sidebar) */}
       <div className="ml-[var(--sidebar-w)] min-h-dvh flex flex-col">
         {/* Topbar sticky */}
-        <Topbar />
+        <Topbar ref={topbarRef} />
 
         {/* Nội dung trang */}
         <div className="flex-1 min-h-0">

@@ -1,9 +1,8 @@
-// src/pages/OrderTracking.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import feather from "feather-icons";
 import MiniMap from "../components/tracking/MiniMap.jsx";
-import Sidebar from "../components/Sidebar.jsx";
-import Topbar from "../components/Topbar.jsx";
+import Sidebar from "../components/tracking/Sidebar.jsx";
+import Topbar from "../components/tracking/Topbar.jsx";
 
 export default function OrderTracking() {
   // ======= Mock data =======
@@ -100,15 +99,15 @@ export default function OrderTracking() {
       `}</style>
 
       <Sidebar />
-      <div className="ml-20">
-        {" "}
-        <Topbar />
-      </div>
+      <Topbar ref={topbarRef} />
 
       {/* Main */}
       <main
         className="lg:overflow-hidden"
-        style={{ marginLeft: "var(--sidebar-w)" }}
+        style={{ 
+          marginLeft: "var(--sidebar-w)",
+          paddingTop: "var(--topbar-h, 64px)"
+        }}
       >
         <div className="p-4 grid grid-cols-12 gap-4">
           {/* LEFT: Order search */}

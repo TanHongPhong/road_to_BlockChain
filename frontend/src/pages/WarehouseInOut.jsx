@@ -1,10 +1,28 @@
 // File: src/pages/WarehouseInOut.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import feather from "feather-icons";
-import Sidebar from "@/components/Sidebar";
-import Topbar from "@/components/Topbar";
+import Sidebar from "@/components/tracking/Sidebar";
+import Topbar from "@/components/tracking/Topbar";
 
 export default function WarehouseInOut() {
+  const topbarRef = useRef(null);
+  
+  useEffect(() => {
+    feather.replace();
+    
+    // Sync CSS var for topbar height
+    const syncTopbar = () => {
+      if (topbarRef.current) {
+        document.documentElement.style.setProperty(
+          "--topbar-h",
+          `${topbarRef.current.offsetHeight}px`
+        );
+      }
+    };
+    syncTopbar();
+    window.addEventListener("resize", syncTopbar);
+    return () => window.removeEventListener("resize", syncTopbar);
+  }, []);
   // ===== Mock data =====
   const DATA = useMemo(
     () => [
@@ -213,12 +231,59 @@ export default function WarehouseInOut() {
 
   return (
     <div className="bg-slate-50 text-slate-900 min-h-screen">
+      {/* Global styles */}
+      <style>{`
+        :root{ --sidebar-w:80px; }
+        html,body{height:100%}
+        body{ background: linear-gradient(180deg,#f8fafc 0%, #eef2f7 60%, #eef2f7 100%); font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; scrollbar-gutter: stable both-edges; }
+        .card{ background:#fff; border:1px solid rgb(226 232 240); border-radius:1rem; box-shadow:0 10px 28px rgba(2,6,23,.08) }
+        .card, article, button{ transition:all .18s ease; }
+        .card:hover{ transform:translateY(-1px); box-shadow:0 16px 40px rgba(2,6,23,.12) }
+        .nice-scroll{ scrollbar-width:thin; scrollbar-color:#cbd5e1 #f1f5f9 }
+        .nice-scroll::-webkit-scrollbar{ width:10px }
+        .nice-scroll::-webkit-scrollbar-track{ background:#f1f5f9; border-radius:9999px }
+        .nice-scroll::-webkit-scrollbar-thumb{ background:#c7d2fe; border-radius:9999px; border:3px solid #f8fafc }
+        .pro-table tbody tr:nth-child(even){ background:#f8fafc }
+        .pro-table tbody tr:hover{ background:#eff6ff }
+        .mini-map{ pointer-events:none; }
+        .mini-map .leaflet-control-attribution{ display:none; }
+        .container-padding { padding-top: clamp(8px, calc(var(--topbar-h,64px) - 56px), 18px); }
+        .mini-map{
+          position: relative;       /* tạo stacking context */
+          z-index: 0;               /* khóa z-index con nằm trong context này */
+          overflow: hidden;         /* clip tile theo border-radius */
+          pointer-events: none;     /* như bạn đang dùng để disable tương tác */
+          border-radius: 0.5rem;    /* backup cho trường hợp thiếu rounded trên div */
+        }
+
+        /* Ép các pane của Leaflet không "vượt" z-index ra ngoài */ 
+        .mini-map .leaflet-pane,
+        .mini-map .leaflet-tile-pane,
+        .mini-map .leaflet-overlay-pane,
+        .mini-map .leaflet-shadow-pane,
+        .mini-map .leaflet-marker-pane,
+        .mini-map .leaflet-tooltip-pane,
+        .mini-map .leaflet-popup-pane {
+          z-index: 0 !important;
+        }
+
+        /* Tránh nền trắng của container Leaflet gây "mảng" đè */
+        .mini-map .leaflet-container {
+          background: transparent !important;
+        }
+      `}</style>
+
       <Sidebar />
+      <Topbar ref={topbarRef} />
 
-      <main className="ml-20">
-        {/* ===== HEADER ===== */}
-        <Topbar />
-
+      <main
+        id="main"
+        className="container-padding"
+        style={{
+          marginLeft: "var(--sidebar-w)",
+          paddingTop: "var(--topbar-h, 64px)",
+        }}
+      >
         {/* ===== CONTENT ===== */}
         <section className="p-6 md:p-8 space-y-6">
           {/* Title & Controls */}

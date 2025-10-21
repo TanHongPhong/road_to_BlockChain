@@ -1,5 +1,5 @@
-// src/pages/ProductManagementPage.jsx
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
+import feather from "feather-icons";
 import {
   Search,
   RefreshCw,
@@ -110,6 +110,24 @@ function ProductCard({ p, onEdit, onDelete }) {
 
 /* ====== Page ====== */
 export default function ProductManagementPage() {
+  const topbarRef = useRef(null);
+  
+  useEffect(() => {
+    feather.replace();
+    
+    // Sync CSS var for topbar height
+    const syncTopbar = () => {
+      if (topbarRef.current) {
+        document.documentElement.style.setProperty(
+          "--topbar-h",
+          `${topbarRef.current.offsetHeight}px`
+        );
+      }
+    };
+    syncTopbar();
+    window.addEventListener("resize", syncTopbar);
+    return () => window.removeEventListener("resize", syncTopbar);
+  }, []);
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("Tất cả");
 
@@ -193,7 +211,7 @@ export default function ProductManagementPage() {
     <>
       {/* Thanh bên & topbar cố định */}
       <Sidebar />
-      <Topbar />
+      <Topbar ref={topbarRef} />
 
       {/* Nội dung chừa chỗ cho Sidebar (w-20) & Topbar (h-16) */}
       <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 text-slate-800 pl-20 pt-16">
