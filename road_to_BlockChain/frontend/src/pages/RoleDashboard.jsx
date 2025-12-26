@@ -162,16 +162,16 @@ const ICON_MAP = { Home, Truck, Package, Warehouse, ClipboardList, Building2 };
 
 export default function RoleDashboard() {
   const navigate = useNavigate();
-  const [role, setRole] = useState("");
+  // KHỞI TẠO TRỰC TIẾP TỪ LOCALSTORAGE ĐỂ TRÁNH RENDER LẠI (FIX LỖI MẤT ITEM)
+  const [role, setRole] = useState(() => localStorage.getItem("role") || "");
   const [darkMode, setDarkMode] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
-    const storedRole = localStorage.getItem("role");
-    if (!storedRole) navigate("/");
-    else setRole(storedRole);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (!role) {
+      navigate("/");
+    }
+  }, [role, navigate]);
 
   const pages = useMemo(() => {
     return DASHBOARD_DATA.pagesByRole[role] || [];
