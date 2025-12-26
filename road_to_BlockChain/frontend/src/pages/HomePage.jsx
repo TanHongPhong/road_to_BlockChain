@@ -90,9 +90,9 @@ export default function HomePage() {
   };
 
   return (
-    <div className={`${darkMode ? "dark" : ""} font-['Outfit']`}>
+    <div className={`${darkMode ? "dark" : ""}`}>
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center bg-[#f8fafc] dark:bg-[#0f172a] transition-colors duration-500">
-        
+
         {/* Animated Background Mesh */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-[20%] -left-[10%] w-[70vw] h-[70vw] bg-purple-300/30 dark:bg-purple-900/20 rounded-full blur-[100px] mix-blend-multiply dark:mix-blend-screen animate-blob" />
@@ -122,7 +122,7 @@ export default function HomePage() {
           className="relative z-10 w-full max-w-5xl mx-4"
         >
           <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/40 dark:border-white/10 p-8 md:p-12 overflow-hidden">
-            
+
             {/* Header */}
             <div className="text-center mb-12">
               <motion.div
@@ -158,11 +158,10 @@ export default function HomePage() {
                 >
                   <button
                     onClick={() => setRole(r.id)}
-                    className={`w-full group relative flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 ${
-                      role === r.id
+                    className={`w-full group relative flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 ${role === r.id
                         ? `border-${r.color.split("-")[1]}-500 bg-white dark:bg-slate-800 shadow-xl ring-2 ring-offset-2 ring-indigo-500 dark:ring-offset-slate-900`
                         : "border-transparent bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-lg"
-                    } ${r.border}`}
+                      } ${r.border}`}
                   >
                     <div
                       className={`p-4 rounded-full mb-4 transition-colors duration-300 ${r.bg} ${r.color}`}
@@ -175,7 +174,7 @@ export default function HomePage() {
                     <p className="text-sm text-slate-500 dark:text-slate-400 text-center">
                       {r.desc}
                     </p>
-                    
+
                     {role === r.id && (
                       <motion.div
                         layoutId="active-indicator"
@@ -193,11 +192,10 @@ export default function HomePage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleContinue}
-                className={`flex items-center gap-3 px-10 py-4 rounded-xl text-lg font-bold text-white shadow-xl transition-all duration-300 ${
-                  role
+                className={`flex items-center gap-3 px-10 py-4 rounded-xl text-lg font-bold text-white shadow-xl transition-all duration-300 ${role
                     ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-indigo-500/30 cursor-pointer"
                     : "bg-slate-300 dark:bg-slate-700 cursor-not-allowed opacity-70"
-                }`}
+                  }`}
               >
                 Continue Access
                 <ArrowRight className={`w-5 h-5 ${role ? "animate-pulse" : ""}`} />
@@ -205,7 +203,7 @@ export default function HomePage() {
             </div>
 
           </div>
-          
+
           {/* Footer */}
           <div className="text-center mt-6 text-slate-500 dark:text-slate-400 text-sm">
             &copy; 2025 BlockChain Logistics. Powered by Web 3.0 Technology.

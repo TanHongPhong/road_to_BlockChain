@@ -204,7 +204,7 @@ export default function RoleDashboard() {
   };
 
   return (
-    <div className={`${darkMode ? "dark" : ""} font-['Outfit']`}>
+    <div className={`${darkMode ? "dark" : ""}`}>
       <div className="flex h-screen overflow-hidden bg-[#f8fafc] dark:bg-[#0f172a] transition-colors duration-500 relative">
 
         {/* Animated Background Mesh (Shared with Home) */}
