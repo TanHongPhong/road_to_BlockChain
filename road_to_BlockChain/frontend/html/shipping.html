@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        '#f8f9fb': '#f8f9fb',
+                        '#5b7cfa': '#5b7cfa',
+                        '#fef3c7': '#fef3c7',
+                        '#fbbf24': '#fbbf24',
+                        '#1e293b': '#1e293b',
+                        '#4a6be8': '#4a6be8',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="h-screen w-full bg-[#f8f9fb] flex flex-col overflow-hidden">
+        <header class="bg-white border-b border-gray-200 px-6 py-3 flex items-center gap-4 flex-shrink-0">
+            <div class="w-10 h-10 bg-[#5b7cfa] rounded-full flex items-center justify-center flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                </svg>
+            </div>
+
+            <button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
+                <span class="text-sm text-gray-700">Rent</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </button>
+
+            <div class="flex items-center gap-2 px-3 py-2 bg-[#fef3c7] rounded-lg">
+                <span class="text-sm text-gray-700">Vegetables</span>
+                <div class="w-4 h-4 rounded-full bg-[#fbbf24] flex items-center justify-center text-white text-xs">
+                    ?
+                </div>
+            </div>
+
+            <button class="ml-auto w-10 h-10 bg-[#5b7cfa] rounded-lg flex items-center justify-center hover:bg-[#4a6be8]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                </svg>
+            </button>
+
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+                <span>+1 (800) 492 8076</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <img src="https://images.unsplash.com/photo-1569913486515-b74bf7751574?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2aWV0bmFtJTIwcHJvZmlsZSUyMGF2YXRhcnxlbnwxfHx8fDE3NjA0MTkwMTB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="VnDeal" class="w-8 h-8 rounded-full object-cover" />
+                <span class="text-sm text-gray-700">VnDeal</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </div>
+        </header>
+
+        <div class="flex-1 flex overflow-hidden">
+            <div class="w-[400px] bg-[#f8f9fb] p-6 overflow-y-auto flex-shrink-0">
+                <div class="mb-2">
+                    <div class="text-xs text-gray-500 mb-1">1000+ buys</div>
+                    <h1 class="text-2xl text-[#1e293b] mb-4">Thông tin vận chuyển</h1>
+                </div>
+
+                <div class="flex gap-2 mb-6">
+                    <button class="px-4 py-2 rounded-lg text-sm transition-colors bg-white text-gray-900 shadow-sm">
+                        Hỏi AI
+                    </button>
+                    <button class="px-4 py-2 rounded-lg text-sm transition-colors bg-transparent text-gray-600 hover:bg-white/50">
+                        Biểu đồ nhiệt độ
+                    </button>
+                    <button class="ml-auto p-2 hover:bg-white/50 rounded-lg">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="text-gray-400">
+                            <line x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <line x1="4" y1="5" x2="16" y2="5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <line x1="4" y1="15" x2="16" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl shadow-sm p-4 flex gap-4 items-center">
+                        <img src="https://placehold.co/128x128/e2e8f0/64748b?text=Image" alt="Supplier" class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-medium text-gray-800">Nhà cung cấp: Công ty TNHH Nông Sạch Minh An</h3>
+                            <div class="flex items-center gap-4 mt-2">
+                                <div class="flex items-center gap-1 text-xs text-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                        <polyline points="16 7 22 7 22 13"></polyline>
+                                    </svg>
+                                    <span>4.8</span>
+                                </div>
+                                <div class="flex items-center gap-1 text-xs text-gray-500">
+                                    <span>Product information</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-500">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M12 16v-4"></path>
+                                        <path d="M12 8h.01"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-4 flex gap-4 items-center">
+                        <img src="https://images.unsplash.com/photo-1758563440210-acede3303ed1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBpbnRlcmlvciUyMHN0b3JhZ2V8ZW58MXx8fHwxNzYwNDE5MDEwfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Warehouse" class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-medium text-gray-800">Kho hàng: Khu Cát Lái – Quận 2</h3>
+                            <p class="text-xs text-gray-500 mt-1">Benefits: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-4 flex gap-4 items-center">
+                        <img src="https://images.unsplash.com/photo-1619322917555-ceb5e3a08cc3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdXBlcm1hcmtldCUyMHByb2R1Y2UlMjBncm9jZXJ5fGVufDF8fHx8MTc2MDQxOTAxMHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Supermarket" class="w-16 h-16 rounded-lg object-cover flex-shrink-0">
+                        <div class="flex-1">
+                            <h3 class="text-sm font-medium text-gray-800">Siêu thị: An Bình Mart (Q.1)</h3>
+                            <div class="flex items-center gap-4 mt-2">
+                                <div class="flex items-center gap-1 text-xs text-green-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                        <polyline points="16 7 22 7 22 13"></polyline>
+                                    </svg>
+                                    <span>4.5</span>
+                                </div>
+                                <div class="flex items-center gap-1 text-xs text-gray-500">
+                                    <span>Product information</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 relative">
+                <div class="absolute inset-0">
+                    <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=106.6297%2C10.7489%2C106.7297%2C10.8489&layer=mapnik&marker=10.7769%2C106.7009" class="w-full h-full" style="border: 0;" title="Ho Chi Minh City Map"></iframe>
+                </div>
+
+                <div class="absolute top-4 right-4 flex flex-col gap-2 z-10">
+                    <button class="w-8 h-8 bg-white rounded shadow-md flex items-center justify-center hover:bg-gray-50">
+                        <span class="text-gray-600 text-lg">+</span>
+                    </button>
+                    <button class="w-8 h-8 bg-white rounded shadow-md flex items-center justify-center hover:bg-gray-50">
+                        <span class="text-gray-600 text-lg">−</span>
+                    </button>
+                </div>
+
+                <div class="absolute top-[20%] left-[35%] z-20">
+                    <div class="bg-white rounded-lg shadow-lg overflow-hidden w-[180px]">
+                        <img src="https://placehold.co/180x96/e2e8f0/64748b?text=Property" alt="Property" class="w-full h-24 object-cover" />
+                        <div class="p-3">
+                            <div class="text-xs text-gray-500">8 sq.mi</div>
+                        </div>
+                    </div>
+                    <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                        <div class="w-0 h-0 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-white"></div>
+                    </div>
+                </div>
+
+                <div class="absolute top-[50%] left-[30%] z-20">
+                    <div class="bg-[#fbbf24] text-white px-3 py-2 rounded-lg shadow-lg text-sm">
+                        <div>UA</div>
+                    </div>
+                </div>
+
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" style="mix-blend-mode: multiply;">
+                    <path d="M 35% 20% Q 30% 35%, 30% 50% T 35% 70%" stroke="#5b7cfa" stroke-width="3" stroke-dasharray="10,10" fill="none" opacity="0.6" />
+                </svg>
+
+                <div class="absolute bottom-4 left-4 right-4 z-20">
+                    <div class="bg-white rounded-xl shadow-lg p-4 mb-3">
+                        <div class="text-sm text-gray-900 mb-2">Tư vấn thông minh</div>
+                        <div class="h-16 bg-gray-50 rounded-lg border border-gray-100"></div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-lg p-4">
+                        <div class="text-sm text-gray-900">AI chatbox</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Giám sát Nhiệt độ & Độ ẩm</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f5f7fa;
+      }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 10px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+      }
+      canvas {
+        width: 100% !important;
+        height: 320px !important;
+      }
+    </style>
+  </head>
+
+  <body class="text-gray-800">
+    <div class="min-h-screen p-5">
+      <header class="mb-5 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <i data-feather="activity" class="h-6 w-6 text-blue-600"></i>
+          <h1 class="text-2xl font-bold text-gray-900">
+            Giám sát nhiệt độ & độ ẩm
+          </h1>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div
+            class="flex flex-wrap items-center gap-3 px-4 py-2 bg-white rounded-lg border border-gray-200 shadow-sm"
+          >
+            <div>
+              <div class="text-xs text-gray-500">Nhiệt độ hiện tại</div>
+              <div id="current-temp" class="text-gray-900 font-semibold">
+                —°C
+              </div>
+            </div>
+            <div class="h-8 w-px bg-gray-200"></div>
+            <div>
+              <div class="text-xs text-gray-500">Trung bình</div>
+              <div id="avg-temp" class="text-gray-900 font-semibold">—°C</div>
+            </div>
+            <div class="h-8 w-px bg-gray-200"></div>
+            <div>
+              <div class="text-xs text-gray-500">Min/Max</div>
+              <div id="min-max-temp" class="text-gray-900 font-semibold">
+                —°C / —°C
+              </div>
+            </div>
+
+            <!-- KPI độ ẩm -->
+            <div class="h-8 w-px bg-gray-200"></div>
+            <div>
+              <div class="text-xs text-gray-500">Độ ẩm hiện tại</div>
+              <div id="current-hum" class="text-gray-900 font-semibold">—%</div>
+            </div>
+
+            <!-- KPI RSL -->
+            <div class="h-8 w-px bg-gray-200"></div>
+            <div>
+              <div class="text-xs text-gray-500">% hạn sử dụng còn lại (RSL)</div>
+              <div id="rsl" class="text-gray-900 font-semibold">—%</div>
+              <div id="rsl-updated" class="text-[11px] text-gray-500">Cập nhật: —</div>
+            </div>
+
+            <!-- KPI TTE -->
+            <div class="h-8 w-px bg-gray-200"></div>
+            <div>
+              <div class="text-xs text-gray-500">TTE (ngày còn lại)</div>
+              <div id="tte" class="text-gray-900 font-semibold">— ngày</div>
+              <div id="tte-note" class="text-[11px] text-gray-500"></div>
+            </div>
+          </div>
+
+          <button
+            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg px-6 h-10 flex items-center gap-2"
+          >
+            <i data-feather="file-text" class="h-4 w-4"></i> Báo cáo
+          </button>
+        </div>
+      </header>
+
+      <main class="grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-5">
+        <!-- LEFT -->
+        <div class="flex flex-col gap-5">
+          <div
+            class="sticky [top:calc(var(--topbar-h,64px)+16px)]"
+            style="--topbar-h: 64px"
+          >
+            <div
+              class="max-h-[calc(100dvh-var(--topbar-h,64px)-2rem)] overflow-y-auto pr-1"
+            >
+              <div class="bg-white border border-slate-200 rounded-2xl p-3 relative">
+                <div
+                  class="sticky top-0 z-10 -m-3 p-3 bg-white/95 backdrop-blur rounded-t-2xl border-b border-slate-200"
+                >
+                  <div class="flex items-center justify-between gap-3">
+                    <h3 class="font-semibold tracking-tight">ORDER SEARCH</h3>
+                    <div class="relative flex-1">
+                      <input
+                        id="search-input"
+                        class="h-9 w-full rounded-lg border border-slate-300 pl-8 pr-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
+                        placeholder="Tìm kiếm"
+                      />
+                      <i
+                        data-feather="search"
+                        class="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+
+                <article class="mt-3 rounded-xl border border-blue-200 bg-blue-50/40 p-3">
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2 flex-1 min-w-0 overflow-hidden">
+                      <span class="inline-grid place-items-center w-8 h-8 rounded-lg bg-blue-100 text-[#1E66FF]">
+                        <i data-feather="truck" class="w-4 h-4"></i>
+                      </span>
+                      <div class="text-sm min-w-0">
+                        <div class="flex items-center gap-2 flex-wrap">
+                          <span class="font-semibold text-slate-800">ShipID-0123</span>
+                          <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-[#1E66FF] ring-1 ring-blue-200/70">
+                            ARRIVING
+                          </span>
+                        </div>
+                        <div class="text-[11px] text-slate-500 leading-snug">
+                          <div>DL04MP7045</div>
+                          <div class="whitespace-nowrap">Tải trọng tối đa 6.5 tấn</div>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      class="shrink-0 w-8 h-8 rounded-full grid place-items-center bg-[#1E66FF] text-white ring-1 ring-blue-500/30 hover:brightness-105"
+                    >
+                      <i data-feather="eye" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </article>
+
+                <div id="vehicle-list" class="mt-3 space-y-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="flex flex-col h-[calc(100dvh-140px)] min-h-0 overflow-hidden">
+          <div class="flex flex-col gap-5 overflow-y-auto pr-2 -mr-2 custom-scrollbar flex-1 min-h-0 h-full">
+            <!-- CHART TEMP -->
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+              <div class="mb-4 flex items-center justify-between">
+                <div>
+                  <h3 class="font-bold text-gray-900 mb-1">Nhiệt độ khu vực</h3>
+                  <div class="text-sm text-gray-500">Biểu đồ nhiệt độ theo thời gian</div>
+                </div>
+                <div id="status" class="text-xs text-gray-500"></div>
+              </div>
+              <canvas id="chart"></canvas>
+            </div>
+
+            <!-- CHART HUM -->
+            <div class="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
+              <div class="mb-4 flex items-center justify-between">
+                <div>
+                  <h3 class="font-bold text-gray-900 mb-1">Độ ẩm khu vực</h3>
+                  <div class="text-sm text-gray-500">Biểu đồ độ ẩm theo thời gian</div>
+                </div>
+                <div id="status-hum" class="text-xs text-gray-500"></div>
+              </div>
+              <canvas id="chart-hum"></canvas>
+            </div>
+
+            <!-- History & Alerts -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
+              <div class="md:col-span-3 p-4 bg-white border border-gray-200 rounded-lg shadow-sm min-w-0">
+                <h3 class="font-bold text-gray-900 mb-4">Lịch sử thay đổi nhiệt độ</h3>
+                <div class="space-y-3">
+                  <div class="grid grid-cols-[140px_130px_1fr_90px_90px] gap-3 pb-2 border-b border-gray-200 text-sm font-semibold text-gray-600">
+                    <div>Thời gian</div><div>Mã xe</div><div>Tuyến đường</div><div>Nhiệt độ</div><div>Biến động</div>
+                  </div>
+                  <div id="history-list"></div>
+                </div>
+              </div>
+              <div class="md:col-span-2 p-4 bg-white border border-gray-200 rounded-lg shadow-sm min-w-0">
+                <h3 class="font-bold text-gray-900 mb-4">Cảnh báo nhiệt độ</h3>
+                <div id="alert-list" class="space-y-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const ESP_BASE = "http://192.168.1.234";
+      const POLL_MS = 2000;
+      const MAX_POINTS = 300;
+
+      /* ======================
+         RSL/TTE (mỗi 4 phút chốt 1 lần)
+         - BASE_SHELF_DAYS: hạn sử dụng tham chiếu (lê ~ 90 ngày trong kho lạnh)
+         - T_REF: nhiệt độ khuyến nghị (thường 0–4°C; chọn 4°C cho demo lạnh)
+         - Q10: hệ số Q10 (demo: 2.0)
+         - INITIAL_USED_DAYS: giả định lê đã tiêu hao trước đó (để RSL không = 100% ngay từ đầu)
+         ====================== */
+      const OUTPUT_EVERY_MS = 4 * 60 * 1000; // 4 phút
+      const WINDOW_MS = 4 * 60 * 1000;       // lấy trung bình 4 phút gần nhất
+      const BASE_SHELF_DAYS = 90;
+      const T_REF = 4;
+      const Q10 = 2.0;
+      const INITIAL_USED_DAYS = 3; // giả định đã tiêu hao 3 ngày trước khi theo dõi
+
+      // fc = fraction consumed (0..1)
+      let fc = Math.min(1, Math.max(0, INITIAL_USED_DAYS / BASE_SHELF_DAYS));
+      let lastPollTs = null;
+      let lastOutputTs = 0;
+
+      // giữ buffer nhiệt độ 4 phút để tính trung bình
+      const tempWindow = []; // {ts, t}
+      function pushWindow(ts, t) {
+        tempWindow.push({ ts, t });
+        const cutoff = ts - WINDOW_MS;
+        while (tempWindow.length && tempWindow[0].ts < cutoff) tempWindow.shift();
+      }
+      function avgTempWindow() {
+        if (!tempWindow.length) return null;
+        let s = 0;
+        for (const p of tempWindow) s += p.t;
+        return s / tempWindow.length;
+      }
+      function q10Rate(T) {
+        return Math.pow(Q10, (T - T_REF) / 10);
+      }
+      function fmtTime(d = new Date()) {
+        return d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      }
+      function clamp(n, a, b) { return Math.min(b, Math.max(a, n)); }
+
+      function updateRslTteUI(force = false) {
+        const now = Date.now();
+        if (!force && now - lastOutputTs < OUTPUT_EVERY_MS) return;
+
+        const tAvg = avgTempWindow();
+        if (!Number.isFinite(tAvg)) return;
+
+        // dự báo nếu giữ điều kiện như 4 phút gần nhất
+        const r = q10Rate(tAvg);
+        const rsl = clamp((1 - fc) * 100, 0, 100);
+        const tteDays = clamp(((1 - fc) * BASE_SHELF_DAYS) / r, 0, BASE_SHELF_DAYS);
+
+        document.getElementById("rsl").textContent = `${rsl.toFixed(2)}%`;
+        document.getElementById("tte").textContent = `${tteDays.toFixed(2)} ngày`;
+        document.getElementById("rsl-updated").textContent = `Cập nhật: ${fmtTime()}`;
+
+        lastOutputTs = now;
+      }
+
+      // ===== TEMP DATA =====
+      const tempData = { labels: [], values: [] };
+      let tempChart = null;
+
+      // ===== HUM DATA =====
+      const humData = { labels: [], values: [] };
+      let humChart = null;
+
+      // ===== COMMON OPTIONS (Chart.js) =====
+      const commonOptions = {
+        animation: false,
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            enabled: true,
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
+            titleColor: "#1f2937",
+            bodyColor: "#1f2937",
+            borderColor: "#e5e7eb",
+            borderWidth: 1,
+            padding: 12,
+            displayColors: true,
+          },
+        },
+        scales: {
+          x: {
+            ticks: { color: "#9ca3af", font: { size: 11 } },
+            grid: { color: "#e5e7eb", drawBorder: false },
+          },
+          y: {
+            ticks: { color: "#9ca3af", font: { size: 11 } },
+            grid: { color: "#e5e7eb", drawBorder: false },
+          },
+        },
+      };
+
+      function initTempChart() {
+        if (tempChart) tempChart.destroy();
+        tempChart = new Chart(document.getElementById("chart"), {
+          type: "line",
+          data: {
+            labels: tempData.labels,
+            datasets: [
+              {
+                label: "Nhiệt độ (°C)",
+                data: tempData.values,
+                borderColor: "#ef4444",
+                backgroundColor: "rgba(239, 68, 68, 0.15)",
+                borderWidth: 2.5,
+                pointRadius: 0,
+                pointHoverRadius: 0,
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+          options: {
+            ...commonOptions,
+            plugins: {
+              ...commonOptions.plugins,
+              tooltip: {
+                ...commonOptions.plugins.tooltip,
+                callbacks: {
+                  label: (ctx) => `Nhiệt độ: ${Number(ctx.parsed.y).toFixed(2)}°C`,
+                },
+              },
+            },
+            scales: {
+              ...commonOptions.scales,
+              y: {
+                ...commonOptions.scales.y,
+                suggestedMin: 0,
+                suggestedMax: 40,
+                ticks: {
+                  ...commonOptions.scales.y.ticks,
+                  callback: (v) => `${Number(v).toFixed(1)}°C`,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function initHumChart() {
+        if (humChart) humChart.destroy();
+        humChart = new Chart(document.getElementById("chart-hum"), {
+          type: "line",
+          data: {
+            labels: humData.labels,
+            datasets: [
+              {
+                label: "Độ ẩm (%)",
+                data: humData.values,
+                borderColor: "#0ea5e9",
+                backgroundColor: "rgba(14,165,233,0.15)",
+                borderWidth: 2.5,
+                pointRadius: 0,
+                pointHoverRadius: 0,
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+          options: {
+            ...commonOptions,
+            plugins: {
+              ...commonOptions.plugins,
+              tooltip: {
+                ...commonOptions.plugins.tooltip,
+                callbacks: {
+                  label: (ctx) => `Độ ẩm: ${Number(ctx.parsed.y).toFixed(2)}%`,
+                },
+              },
+            },
+            scales: {
+              ...commonOptions.scales,
+              y: {
+                ...commonOptions.scales.y,
+                suggestedMin: 0,
+                suggestedMax: 100,
+                ticks: {
+                  ...commonOptions.scales.y.ticks,
+                  callback: (v) => `${Number(v).toFixed(0)}%`,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function updateTempKpis() {
+        if (!tempData.values.length) {
+          document.getElementById("current-temp").textContent = "—°C";
+          document.getElementById("avg-temp").textContent = "—°C";
+          document.getElementById("min-max-temp").textContent = "—°C / —°C";
+          return;
+        }
+        const cur = tempData.values[tempData.values.length - 1];
+        const avg =
+          tempData.values.reduce((s, v) => s + v, 0) / tempData.values.length;
+        const min = Math.min(...tempData.values);
+        const max = Math.max(...tempData.values);
+
+        document.getElementById("current-temp").textContent = `${cur.toFixed(1)}°C`;
+        document.getElementById("avg-temp").textContent = `${avg.toFixed(1)}°C`;
+        document.getElementById("min-max-temp").textContent = `${min.toFixed(1)}°C / ${max.toFixed(1)}°C`;
+      }
+
+      function updateHumKpi(h) {
+        const el = document.getElementById("current-hum");
+        if (Number.isFinite(h)) el.textContent = `${h.toFixed(1)}%`;
+        else el.textContent = "—%";
+      }
+
+      async function pollDevice() {
+        const statusTemp = document.getElementById("status");
+        const statusHum = document.getElementById("status-hum");
+
+        try {
+          const r = await fetch(`${ESP_BASE}/api/now`, { cache: "no-store" });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const j = await r.json();
+
+          const t = Number(j.t); // nhiệt độ
+          const h = Number(j.h); // độ ẩm (%)
+
+          const now = Date.now();
+          const label = new Date(now).toLocaleTimeString("vi-VN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          });
+
+          // ===== TEMP =====
+          if (!Number.isNaN(t)) {
+            tempData.labels.push(label);
+            tempData.values.push(t);
+            if (tempData.labels.length > MAX_POINTS) {
+              tempData.labels.shift();
+              tempData.values.shift();
+            }
+
+            statusTemp.textContent = `${new Date().toLocaleTimeString()} | t=${t.toFixed(1)}°C`;
+            if (tempChart) {
+              tempChart.data.labels = tempData.labels;
+              tempChart.data.datasets[0].data = tempData.values;
+              tempChart.update("none");
+            }
+            updateTempKpis();
+
+            // ---- RSL/TTE logic ----
+            pushWindow(now, t);
+
+            // cộng dồn hao hụt theo thời gian (dùng nhiệt độ hiện tại)
+            if (lastPollTs != null) {
+              const dtSec = (now - lastPollTs) / 1000;
+              const rInstant = q10Rate(t);
+              const add = (dtSec / (BASE_SHELF_DAYS * 86400)) * rInstant;
+              fc = clamp(fc + add, 0, 1);
+            }
+            lastPollTs = now;
+
+            // cập nhật UI RSL/TTE: lần đầu cập nhật ngay, sau đó mỗi 4 phút
+            updateRslTteUI(lastOutputTs === 0);
+          } else {
+            statusTemp.textContent = "Dữ liệu nhiệt độ không hợp lệ";
+          }
+
+          // ===== HUM =====
+          if (!Number.isNaN(h)) {
+            humData.labels.push(label);
+            humData.values.push(h);
+            if (humData.labels.length > MAX_POINTS) {
+              humData.labels.shift();
+              humData.values.shift();
+            }
+            statusHum.textContent = `${new Date().toLocaleTimeString()} | h=${h.toFixed(1)}%`;
+            if (humChart) {
+              humChart.data.labels = humData.labels;
+              humChart.data.datasets[0].data = humData.values;
+              humChart.update("none");
+            }
+            updateHumKpi(h);
+          } else {
+            statusHum.textContent = "Dữ liệu độ ẩm không hợp lệ";
+            updateHumKpi(NaN);
+          }
+        } catch (e) {
+          console.warn(e);
+          statusTemp.textContent = "Không lấy được dữ liệu";
+          statusHum.textContent = "Không lấy được dữ liệu";
+        }
+      }
+
+      // ===== vehicles mock =====
+      const vehicles = [
+        { id: "Truck #A123", route: "TP.HCM → Hà Nội", status: "running" },
+        { id: "Truck #B456", route: "Đà Nẵng → Huế", status: "running" },
+        { id: "Truck #C789", route: "Hà Nội → Hải Phòng", status: "paused" },
+      ];
+
+      function renderVehicles() {
+        const q = (document.getElementById("search-input").value || "").toLowerCase();
+        const container = document.getElementById("vehicle-list");
+        container.innerHTML = vehicles
+          .filter((v) => v.id.toLowerCase().includes(q) || v.route.toLowerCase().includes(q))
+          .map(
+            (v) => `
+          <article class="mt-3 rounded-xl border border-blue-200 bg-blue-50/40 p-3">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 flex-1 min-w-0 overflow-hidden">
+                <span class="inline-grid place-items-center w-8 h-8 rounded-lg bg-blue-100 text-[#1E66FF]">
+                  <i data-feather="truck" class="w-4 h-4"></i>
+                </span>
+                <div class="text-sm min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="font-semibold text-slate-800 truncate">${v.id}</span>
+                    <span class="px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 text-[#1E66FF] ring-1 ring-blue-200/70">
+                      ${v.status === "paused" ? "PAUSED" : "ARRIVING"}
+                    </span>
+                  </div>
+                  <div class="text-[11px] text-slate-500 leading-snug">
+                    <div class="truncate">${v.route}</div>
+                    <div class="whitespace-nowrap">Tải trọng tối đa 6.5 tấn</div>
+                  </div>
+                </div>
+              </div>
+              <button class="shrink-0 w-8 h-8 rounded-full grid place-items-center bg-[#1E66FF] text-white ring-1 ring-blue-500/30">
+                <i data-feather="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </article>`
+          )
+          .join("");
+        feather.replace();
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        feather.replace();
+        initTempChart();
+        initHumChart();
+        renderVehicles();
+        document.getElementById("search-input").addEventListener("input", renderVehicles);
+
+        pollDevice();
+        setInterval(pollDevice, POLL_MS);
+
+        // bảo đảm cứ đúng chu kỳ 4 phút sẽ refresh lại RSL/TTE (kể cả nếu poll bị lag)
+        setInterval(() => updateRslTteUI(false), OUTPUT_EVERY_MS);
+      });
+    </script>
+  </body>
+</html>

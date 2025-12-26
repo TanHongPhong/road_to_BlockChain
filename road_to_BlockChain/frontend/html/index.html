@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomePage | Logistics System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a2e0adf5c4.js" crossorigin="anonymous"></script>
+  <style>
+    .fade-in { animation: fadeIn 0.6s ease-in-out; }
+    .fade-out { animation: fadeOut 0.4s ease-in-out forwards; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px);} to {opacity: 1; transform: translateY(0);} }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+  </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
+
+  <!-- Toggle Theme -->
+  <div class="absolute top-4 right-4">
+    <button id="themeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+      <i id="themeIcon" class="fas fa-moon text-gray-700 dark:text-yellow-400"></i>
+    </button>
+  </div>
+
+  <!-- Login Section -->
+  <section id="loginSection" class="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-600 to-cyan-500 dark:from-gray-800 dark:to-gray-700 transition-all">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl flex flex-col md:flex-row w-11/12 md:w-4/5 overflow-hidden">
+      
+      <!-- Left side (image/illustration) -->
+      <div class="hidden md:flex md:w-1/2 bg-cover bg-center" 
+           style="background-image: url('https://images.unsplash.com/photo-1617196035154-1c236d4b31a7?auto=format&fit=crop&w=800&q=80');">
+      </div>
+
+      <!-- Right side (form) -->
+      <div class="w-full md:w-1/2 p-10 flex flex-col justify-center items-center fade-in">
+        <h2 class="text-3xl font-bold text-gray-800 dark:text-white mb-2">Welcome Back!</h2>
+        <p class="text-gray-500 dark:text-gray-300 mb-6">Đăng nhập để truy cập hệ thống quản lý logistics</p>
+
+        <form id="loginForm" class="w-full max-w-sm space-y-4">
+          <div>
+            <label class="block text-gray-700 dark:text-gray-300">Tài khoản</label>
+            <div class="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2">
+              <i class="fas fa-user text-gray-400 mr-2"></i>
+              <input id="username" type="text" placeholder="Nhập tài khoản..." 
+                     class="w-full bg-transparent outline-none text-gray-800 dark:text-white" required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 dark:text-gray-300">Mật khẩu</label>
+            <div class="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg px-3 py-2">
+              <i class="fas fa-lock text-gray-400 mr-2"></i>
+              <input id="password" type="password" placeholder="••••••" 
+                     class="w-full bg-transparent outline-none text-gray-800 dark:text-white" required>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-700 dark:text-gray-300">Vai trò</label>
+            <select id="role" class="w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-lg px-3 py-2">
+              <option value="admin">Admin</option>
+              <option value="supplier">Supplier</option>
+              <option value="driver">Driver</option>
+              <option value="warehouse">Warehouse</option>
+            </select>
+          </div>
+
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition-colors duration-300">
+            <i class="fas fa-sign-in-alt mr-2"></i>Đăng nhập
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Section -->
+  <section id="dashboardSection" class="hidden min-h-screen fade-in bg-gray-50 dark:bg-gray-900 transition-all">
+    <div class="flex flex-col md:flex-row h-screen">
+      <!-- Sidebar -->
+      <aside class="w-full md:w-64 bg-white dark:bg-gray-800 shadow-lg flex flex-col">
+        <div class="p-6 text-2xl font-bold text-blue-600 dark:text-blue-400 border-b border-gray-200 dark:border-gray-700">
+          Dashboard
+        </div>
+        <nav class="flex-1 p-4 space-y-3">
+          <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 flex items-center">
+            <i class="fas fa-home mr-3"></i>Trang chủ
+          </button>
+          <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 flex items-center">
+            <i class="fas fa-truck mr-3"></i>Vận chuyển
+          </button>
+          <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 flex items-center">
+            <i class="fas fa-box mr-3"></i>Kho hàng
+          </button>
+          <button class="w-full text-left px-3 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-gray-700 flex items-center">
+            <i class="fas fa-users mr-3"></i>Nhà cung cấp
+          </button>
+        </nav>
+        <button id="logoutBtn" class="m-4 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700">
+          <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
+        </button>
+      </aside>
+
+      <!-- Main content -->
+      <main class="flex-1 p-8 overflow-auto">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-white mb-6">
+          Xin chào, <span id="userRole" class="text-blue-600 dark:text-blue-400"></span>!
+        </h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow hover:shadow-lg transition">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Đơn hàng</h2>
+            <p class="text-3xl font-bold text-blue-600 mt-2">128</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow hover:shadow-lg transition">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Đang vận chuyển</h2>
+            <p class="text-3xl font-bold text-green-500 mt-2">45</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow hover:shadow-lg transition">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Tồn kho</h2>
+            <p class="text-3xl font-bold text-yellow-500 mt-2">320</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow hover:shadow-lg transition">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Đối tác</h2>
+            <p class="text-3xl font-bold text-purple-500 mt-2">12</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <script>
+    const loginSection = document.getElementById("loginSection");
+    const dashboardSection = document.getElementById("dashboardSection");
+    const loginForm = document.getElementById("loginForm");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userRole = document.getElementById("userRole");
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+
+    // Dark/Light mode logic
+    if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+      document.documentElement.classList.add("dark");
+      themeIcon.classList.replace("fa-moon", "fa-sun");
+    }
+
+    themeToggle.onclick = () => {
+      document.documentElement.classList.toggle("dark");
+      const isDark = document.documentElement.classList.contains("dark");
+      localStorage.theme = isDark ? "dark" : "light";
+      themeIcon.classList.toggle("fa-sun", isDark);
+      themeIcon.classList.toggle("fa-moon", !isDark);
+    };
+
+    // Fake login logic
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const role = document.getElementById("role").value;
+
+      if (username && password) {
+        userRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        loginSection.classList.add("fade-out");
+        setTimeout(() => {
+          loginSection.classList.add("hidden");
+          dashboardSection.classList.remove("hidden");
+          dashboardSection.classList.add("fade-in");
+        }, 400);
+      } else {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+      }
+    });
+
+    logoutBtn.onclick = () => {
+      dashboardSection.classList.add("fade-out");
+      setTimeout(() => {
+        dashboardSection.classList.add("hidden");
+        loginSection.classList.remove("hidden");
+        loginSection.classList.add("fade-in");
+        loginForm.reset();
+      }, 400);
+    };
+  </script>
+</body>
+</html>

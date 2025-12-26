@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shipping information — Tailwind (compact height)</title>
+
+    <!-- Fonts + Tailwind -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { inter: ["Inter", "ui-sans-serif", "system-ui"] },
+            colors: {
+              bg: "#f4f7ff",
+              border: "#e6e9f0",
+              text: "#0f172a",
+              pill: "#eef2ff",
+              pillText: "#4338ca",
+            },
+            boxShadow: {
+              soft: "0 12px 32px rgba(2,6,23,.08)",
+              card: "0 8px 22px rgba(2,6,23,.06)",
+            },
+            borderRadius: { magic: "18px" },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
+  </head>
+  <body class="bg-bg font-inter text-text">
+    <!-- NAV -->
+    <header class="px-3 xl:px-4 py-3">
+      <div class="flex flex-wrap items-center gap-3">
+        <div
+          class="w-9 h-9 rounded-xl grid place-items-center text-white font-extrabold shadow-[0_6px_16px_rgba(90,124,250,.45)]"
+          style="background: linear-gradient(135deg, #7c8dff, #5b7cfa)"
+        >
+          L
+        </div>
+
+        <button
+          class="flex items-center gap-2 bg-white border border-border rounded-xl px-3 py-1.5 text-sm shadow-card"
+        >
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="text-slate-700">Rent</span>
+          <svg
+            class="w-4 h-4 text-slate-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+
+        <span
+          class="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-pill text-pillText font-semibold text-xs px-3 py-1.5 shadow-card"
+        >
+          <svg
+            class="w-3.5 h-3.5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="9" />
+          </svg>
+          Vegetables
+        </span>
+
+        <label
+          class="flex items-center gap-2 bg-white border border-border rounded-xl px-3 py-1.5 min-w-0 sm:min-w-[260px] grow max-w-[520px] shadow-card"
+        >
+          <svg
+            class="w-4 h-4 text-slate-500"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.3-4.3" />
+          </svg>
+          <input
+            class="w-full bg-transparent outline-none text-sm"
+            placeholder="Tìm tuyến đường, kho, đơn hàng…"
+          />
+          <button
+            class="shrink-0 w-8 h-8 rounded-lg grid place-items-center text-white"
+            style="background: #7b8cff"
+          >
+            <svg
+              class="w-[18px] h-[18px]"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </button>
+        </label>
+
+        <div
+          class="ml-auto flex items-center gap-2 bg-white border border-border rounded-xl px-2.5 py-1.5 shadow-card"
+        >
+          <span class="w-8 h-8 rounded-full bg-blue-100"></span>
+          <strong class="text-sm">TriDzai</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN: mobile 1 cột → map xuống hàng; desktop 2 cột. Cả 2 cột đều thấp hơn. -->
+    <main class="px-3 xl:px-4 pb-6">
+      <div class="grid grid-cols-1 lg:grid-cols-[420px_1fr] gap-4">
+        <!-- LEFT (compact height + internal scroll) -->
+        <section
+          class="space-y-3 h-[610px] md:h-[610px] lg:h-[610px] overflow-y-auto pr-1"
+        >
+          <!-- Title row -->
+          <div class="flex items-end justify-between">
+            <div>
+              <div
+                class="text-[12px] tracking-wide text-slate-500 font-semibold mb-1"
+              >
+                1000+ buys
+              </div>
+              <h1 class="text-[28px] leading-tight font-bold -tracking-[.02em]">
+                Shipping information
+              </h1>
+            </div>
+            <button
+              class="w-9 h-9 grid place-items-center rounded-xl bg-white border border-border shadow-card"
+              title="Lọc"
+            >
+              <svg
+                class="w-5 h-5 text-slate-700"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 6h18M6 12h12M10 18h4" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Segmented controls -->
+          <div
+            class="bg-slate-100 rounded-full p-1 inline-flex items-center gap-1"
+          >
+            <button
+              id="segAsked"
+              class="px-3 py-1.5 rounded-full text-xs font-semibold text-white"
+              style="background: linear-gradient(90deg, #5b7cfa, #7b8cff)"
+            >
+              Asked AI
+            </button>
+            <button
+              id="segTemp"
+              class="px-3 py-1.5 rounded-full text-xs font-semibold text-slate-700 bg-white border border-border"
+            >
+              Temperature diagram
+            </button>
+          </div>
+
+          <!-- Supplier -->
+          <article
+            class="bg-white border border-border rounded-magic shadow-card p-3"
+          >
+            <div class="flex items-center gap-3">
+              <img
+                class="w-[56px] h-[56px] rounded-xl object-cover"
+                src="https://images.unsplash.com/photo-1505691723518-36a5ac3b2d83?q=80&w=480&auto=format&fit=crop"
+                alt="Supplier"
+              />
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <div class="font-semibold">Supplier: Name &amp; ID</div>
+                  <div class="text-slate-600 text-xs md:text-sm">⭐ 4.8</div>
+                </div>
+                <div class="text-slate-500 text-[12px] md:text-[13px] mt-1">
+                  Supplier information
+                </div>
+                <div class="h-px bg-border my-2"></div>
+                <p class="text-slate-500 text-[12px] md:text-[13px]">
+                  Information: Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit, sed do eiusmod…
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Warehouse (1 item, horizontal) -->
+          <article
+            class="bg-white border border-border rounded-magic shadow-card p-3"
+          >
+            <div class="flex items-start sm:items-center gap-3">
+              <img
+                class="w-[104px] h-[78px] sm:w-[120px] sm:h-[90px] rounded-xl object-cover"
+                src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=800&auto=format&fit=crop"
+                alt="warehouse"
+              />
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <h3 class="font-semibold">Ware house</h3>
+                  <span class="text-[12px] text-slate-500 hidden sm:inline"
+                    >ID: WH-001</span
+                  >
+                </div>
+                <p class="text-[12px] md:text-[13px] text-slate-600 mt-1">
+                  Information: Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit, sed do eiusmod tempor incididunt.
+                </p>
+                <div
+                  class="mt-2 grid grid-cols-2 gap-2 text-[12px] text-slate-500"
+                >
+                  <div>Address: 123 Logistics Ave</div>
+                  <div>Status: Active</div>
+                  <div>Capacity: 4,200 m²</div>
+                  <div>Contact: (800) 657 8976</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Super market -->
+          <article
+            class="bg-white border border-border rounded-magic shadow-card p-3"
+          >
+            <div class="flex items-center justify-between">
+              <div class="font-semibold">Super market</div>
+              <div class="text-slate-600 text-xs md:text-sm">
+                ⭐ 4.8 Product information
+              </div>
+            </div>
+            <div class="h-px bg-border my-2"></div>
+            <p class="text-slate-500 text-[12px] md:text-[13px]">
+              Information — Lorem ipsum dolor sit amet, consectetur adipiscing
+              elit.
+            </p>
+            <div class="mt-3 grid grid-cols-2 gap-3">
+              <img
+                class="rounded-xl object-cover aspect-[5/3]"
+                src="https://images.unsplash.com/photo-1619166718947-3b4451a2587f?q=80&w=900&auto=format&fit=crop"
+                alt="banner"
+              />
+              <img
+                class="rounded-xl object-cover aspect-square"
+                src="https://images.unsplash.com/photo-1678776685969-9a70f395a48d?q=80&w=600&auto=format&fit=crop"
+                alt="market"
+              />
+            </div>
+          </article>
+        </section>
+
+        <!-- RIGHT / MAP (compact heights) -->
+        <section class="relative h-[610px] md:h-[610px] lg:h-[610px]">
+          <div
+            class="absolute inset-0 rounded-magic border border-border bg-gradient-to-b from-white to-blue-50 shadow-card overflow-hidden"
+          >
+            <!-- street grid pattern -->
+            <div
+              class="absolute inset-0 pointer-events-none opacity-[.4]"
+              style="
+                background-image: linear-gradient(
+                    to right,
+                    rgba(0, 0, 0, 0.035) 1px,
+                    transparent 1px
+                  ),
+                  linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.035) 1px,
+                    transparent 1px
+                  );
+                background-size: 48px 48px, 48px 48px;
+              "
+            ></div>
+
+            <!-- zoom -->
+            <div class="absolute right-3 top-3 grid gap-2">
+              <button
+                class="w-9 h-9 bg-white border border-border rounded-lg shadow-card font-semibold"
+              >
+                +
+              </button>
+              <button
+                class="w-9 h-9 bg-white border border-border rounded-lg shadow-card font-semibold"
+              >
+                −
+              </button>
+            </div>
+
+            <!-- bottom panels (lower min-height to fit compact) -->
+            <div
+              class="absolute left-3 right-3 bottom-2 grid gap-2 xl:gap-3 xl:grid-cols-[1fr_1.1fr]"
+            >
+              <div
+                class="bg-white border border-border rounded-xl shadow-card p-3 min-h-[96px]"
+              >
+                <h3 class="font-semibold">Smart advice</h3>
+                <p class="text-[12px] md:text-[13px] text-slate-600">
+                  Gợi ý tối ưu lộ trình, thời gian, và điểm ghé.
+                </p>
+              </div>
+              <div
+                class="bg-white border border-border rounded-xl shadow-card p-3 min-h-[96px]"
+              >
+                <h3 class="font-semibold">AI chatbox</h3>
+                <p class="text-[12px] md:text-[13px] text-slate-600">
+                  Hỏi về nhà cung cấp, kho, đơn hàng hoặc biểu đồ nhiệt độ…
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const a = document.getElementById("segAsked");
+      const b = document.getElementById("segTemp");
+      function onSel(el, other) {
+        el.style.background = "linear-gradient(90deg,#5b7cfa,#7b8cff)";
+        el.classList.add("text-white");
+        other.style.background = "";
+        other.classList.remove("text-white");
+        other.classList.add("bg-white");
+      }
+      a?.addEventListener("click", () => onSel(a, b));
+      b?.addEventListener("click", () => onSel(b, a));
+    </script>
+  </body>
+</html>
