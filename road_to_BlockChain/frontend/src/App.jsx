@@ -17,6 +17,8 @@ import CameraWarehouseOut from "./pages/CameraWarehouseOut.jsx";
 import CameraWarehouseIn from "./pages/CameraWarehouseIn.jsx";
 import SupermarketReceiving from "./pages/SupermarketReceiving.jsx";
 import MobileShelfPutaway from "./pages/MobileShelfPutaway.jsx";
+import NhietDoDoAm from "./pages/NhietDoDoAm.jsx";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -53,6 +55,7 @@ export default function App() {
           path="/order-tracking-customer"
           element={<OrderTrackingCustomer />}
         />
+        <Route path="/nhiet-do-do-am" element={<NhietDoDoAm />} />
         {/* 404 cuối cùng */}
         <Route path="*" element={<NotFound />} />
       </Routes>
