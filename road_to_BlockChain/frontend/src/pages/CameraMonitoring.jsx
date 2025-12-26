@@ -26,7 +26,6 @@ import { useNavigate } from "react-router-dom";
 import { CameraCard } from "../components/monitoring/CameraCard.jsx";
 
 export default function CameraMonitoring() {
-  const [isRecording, setIsRecording] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -147,45 +146,12 @@ export default function CameraMonitoring() {
                 className="w-full lg:w-3/4 flex flex-col gap-4"
               >
                 {/* Camera Container */}
-                <div className="relative group rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/50 shadow-2xl ring-1 ring-white/10">
-                  {/* Header Overlay */}
-                  <div className="absolute top-0 inset-x-0 z-20 p-4 bg-gradient-to-b from-black/80 to-transparent flex items-start justify-between">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-3 w-3 relative">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                      </span>
-                      <span className="px-2.5 py-1 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-white text-xs font-medium tracking-wide">
-                        CAM A-01: LIVE
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="p-2 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 hover:bg-white/20 text-white transition-colors">
-                        <Maximize2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Main Feed */}
-                  <div className="aspect-video w-full bg-slate-900 flex items-center justify-center">
-                    <CameraCard className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity" cameraId="A01" showControls={false} />
-                  </div>
-
-                  {/* Footer Controls */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-4 px-6 py-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl transition-transform hover:scale-105">
-                    <ControlButton
-                      active={isRecording}
-                      onClick={() => setIsRecording(!isRecording)}
-                      icon={isRecording ? <Pause className="w-5 h-5 fill-current" /> : <div className="w-4 h-4 rounded-full bg-current" />}
-                      label={isRecording ? "Dừng ghi" : "Ghi hình"}
-                      color="rose"
-                    />
-                    <div className="w-[1px] h-8 bg-white/20" />
-                    <ControlButton icon={<Camera className="w-5 h-5" />} label="Chụp ảnh" />
-                    <ControlButton icon={<QrCode className="w-5 h-5" />} label="Quét mã" />
-                    <div className="w-[1px] h-8 bg-white/20" />
-                    <ControlButton icon={<RotateCcw className="w-5 h-5" />} label="Đổi Cam" />
-                  </div>
+                <div className="relative group rounded-3xl overflow-hidden bg-slate-900 border border-slate-700/50 shadow-2xl ring-1 ring-white/10 p-1">
+                  <CameraCard
+                    className="w-full h-auto"
+                    cameraId="A01"
+                    showControls={true}
+                  />
                 </div>
               </motion.div>
 

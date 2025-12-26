@@ -1,572 +1,530 @@
-// File: src/pages/WarehouseInOut.jsx
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import feather from "feather-icons";
+import React, { useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Package,
+  Truck,
+  AlertTriangle,
+  Activity,
+  Search,
+  Download,
+  Upload,
+  Filter,
+  RefreshCw,
+  Box,
+  Users,
+  ChevronDown,
+  ArrowRight,
+  Clock,
+  CheckCircle2
+} from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import Topbar from "@/components/Topbar";
 
-export default function WarehouseInOut() {
-  // ===== Mock data =====
-  const DATA = useMemo(
-    () => [
-      {
-        id: "DL04MP7045",
-        type: "in",
-        status: "Đang vận chuyển",
-        customer: "Đặng Huy Tuấn",
-        from: "Lào tồn",
-        to: "TP.HCM",
-        weight: 250,
-        unit: "KG",
-        pallets: 8,
-        docks: "D1",
-        carrier: "GMD-TRK-21",
-        eta: "12/12/2025",
-        temp: "Thường",
-      },
-      {
-        id: "DL04MP7046",
-        type: "out",
-        status: "Đã xuất kho",
-        customer: "Thái Lý Lộc",
-        from: "Bình Định",
-        to: "Hà Nội",
-        weight: 2000,
-        unit: "KG",
-        pallets: 12,
-        docks: "D3",
-        carrier: "GMD-TRK-07",
-        eta: "01/12/2025",
-        temp: "Mát",
-      },
-      {
-        id: "DL04MP7054",
-        type: "in",
-        status: "Lưu kho",
-        customer: "Tân Hồng Phong",
-        from: "Vũng Tàu",
-        to: "Đồng Nai",
-        weight: 540,
-        unit: "KG",
-        pallets: 10,
-        docks: "D2",
-        carrier: "GMD-TRK-12",
-        eta: "12/07/2025",
-        temp: "Mát",
-      },
-      {
-        id: "DL04MP7525",
-        type: "in",
-        status: "Đang vận chuyển",
-        customer: "Ngô Trọng Nhân",
-        from: "Đồng Nai",
-        to: "Nha Trang",
-        weight: 938,
-        unit: "KG",
-        pallets: 15,
-        docks: "D5",
-        carrier: "GMD-TRK-33",
-        eta: "20/07/2025",
-        temp: "Lạnh",
-      },
-      {
-        id: "DL04MP9845",
-        type: "out",
-        status: "Đang vận chuyển",
-        customer: "Lê Quang Trường",
-        from: "Khánh Hoà",
-        to: "TP.HCM",
-        weight: 12000,
-        unit: "KG",
-        pallets: 25,
-        docks: "D4",
-        carrier: "GMD-TRK-08",
-        eta: "12/01/2025",
-        temp: "Thường",
-      },
-      {
-        id: "DL04MP7875",
-        type: "in",
-        status: "Lưu kho",
-        customer: "Thái Lý Lộc",
-        from: "Cà Mau",
-        to: "Hà Nội",
-        weight: 250,
-        unit: "KG",
-        pallets: 6,
-        docks: "D2",
-        carrier: "GMD-TRK-02",
-        eta: "22/06/2025",
-        temp: "Thường",
-      },
-      {
-        id: "DL04MP7995",
-        type: "out",
-        status: "Lưu kho",
-        customer: "Ngô Trọng Nhân",
-        from: "Bến Tre",
-        to: "Cà Mau",
-        weight: 370,
-        unit: "KG",
-        pallets: 9,
-        docks: "D6",
-        carrier: "GMD-TRK-19",
-        eta: "19/01/2025",
-        temp: "Mát",
-      },
-      {
-        id: "DL04MP4545",
-        type: "in",
-        status: "Đang vận chuyển",
-        customer: "Đặng Huy Tuấn",
-        from: "Vũng Tàu",
-        to: "Vĩnh Long",
-        weight: 920,
-        unit: "KG",
-        pallets: 14,
-        docks: "D1",
-        carrier: "GMD-TRK-17",
-        eta: "17/08/2025",
-        temp: "Thường",
-      },
-    ],
-    []
+/* ================== MOCK DATA ================== */
+const MOCK_DATA = [
+  {
+    id: "DL04MP7045",
+    type: "in",
+    status: "Đang vận chuyển",
+    customer: "Đặng Huy Tuấn",
+    from: "Lào tồn",
+    to: "TP.HCM",
+    weight: 250,
+    unit: "KG",
+    pallets: 8,
+    docks: "D1",
+    carrier: "GMD-TRK-21",
+    eta: "12/12/2025",
+    temp: "Thường",
+  },
+  {
+    id: "DL04MP7046",
+    type: "out",
+    status: "Đã xuất kho",
+    customer: "Thái Lý Lộc",
+    from: "Bình Định",
+    to: "Hà Nội",
+    weight: 2000,
+    unit: "KG",
+    pallets: 12,
+    docks: "D3",
+    carrier: "GMD-TRK-07",
+    eta: "01/12/2025",
+    temp: "Mát",
+  },
+  {
+    id: "DL04MP7054",
+    type: "in",
+    status: "Lưu kho",
+    customer: "Tân Hồng Phong",
+    from: "Vũng Tàu",
+    to: "Đồng Nai",
+    weight: 540,
+    unit: "KG",
+    pallets: 10,
+    docks: "D2",
+    carrier: "GMD-TRK-12",
+    eta: "12/07/2025",
+    temp: "Mát",
+  },
+  {
+    id: "DL04MP7525",
+    type: "in",
+    status: "Đang vận chuyển",
+    customer: "Ngô Trọng Nhân",
+    from: "Đồng Nai",
+    to: "Nha Trang",
+    weight: 938,
+    unit: "KG",
+    pallets: 15,
+    docks: "D5",
+    carrier: "GMD-TRK-33",
+    eta: "20/07/2025",
+    temp: "Lạnh",
+  },
+  {
+    id: "DL04MP9845",
+    type: "out",
+    status: "Đang vận chuyển",
+    customer: "Lê Quang Trường",
+    from: "Khánh Hoà",
+    to: "TP.HCM",
+    weight: 12000,
+    unit: "KG",
+    pallets: 25,
+    docks: "D4",
+    carrier: "GMD-TRK-08",
+    eta: "12/01/2025",
+    temp: "Thường",
+  },
+  {
+    id: "DL04MP7875",
+    type: "in",
+    status: "Lưu kho",
+    customer: "Thái Lý Lộc",
+    from: "Cà Mau",
+    to: "Hà Nội",
+    weight: 250,
+    unit: "KG",
+    pallets: 6,
+    docks: "D2",
+    carrier: "GMD-TRK-02",
+    eta: "22/06/2025",
+    temp: "Thường",
+  },
+  {
+    id: "DL04MP7995",
+    type: "out",
+    status: "Lưu kho",
+    customer: "Ngô Trọng Nhân",
+    from: "Bến Tre",
+    to: "Cà Mau",
+    weight: 370,
+    unit: "KG",
+    pallets: 9,
+    docks: "D6",
+    carrier: "GMD-TRK-19",
+    eta: "19/01/2025",
+    temp: "Mát",
+  },
+  {
+    id: "DL04MP4545",
+    type: "in",
+    status: "Đang vận chuyển",
+    customer: "Đặng Huy Tuấn",
+    from: "Vũng Tàu",
+    to: "Vĩnh Long",
+    weight: 920,
+    unit: "KG",
+    pallets: 14,
+    docks: "D1",
+    carrier: "GMD-TRK-17",
+    eta: "17/08/2025",
+    temp: "Thường",
+  },
+];
+
+/* ================== HELPERS ================== */
+function StatusBadge({ status }) {
+  const styles = {
+    "Đã xuất kho": "bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200",
+    "Lưu kho": "bg-indigo-100 text-indigo-700 ring-1 ring-indigo-200",
+    "Đang vận chuyển": "bg-blue-100 text-blue-700 ring-1 ring-blue-200",
+    default: "bg-slate-100 text-slate-700 ring-1 ring-slate-200",
+  };
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${styles[status] || styles.default}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${status === "Đã xuất kho" ? "bg-emerald-500" : status === "Lưu kho" ? "bg-indigo-500" : "bg-blue-500"}`} />
+      {status}
+    </span>
   );
+}
 
-  // ===== UI state =====
-  const [tab, setTab] = useState("all"); // 'all' | 'in' | 'out' | 'hold'
-  const [dock, setDock] = useState("Tất cả");
-  const [temp, setTemp] = useState("Tất cả");
-
-  const baseRows = useMemo(
-    () => (tab === "all" ? DATA : DATA.filter((d) => d.type === tab)),
-    [DATA, tab]
-  );
-  const filteredRows = useMemo(
-    () =>
-      baseRows.filter(
-        (d) =>
-          (dock === "Tất cả" || d.docks === dock) &&
-          (temp === "Tất cả" || d.temp === temp)
-      ),
-    [baseRows, dock, temp]
-  );
-
-  // Feather icons refresh
-  useEffect(() => {
-    feather.replace({ width: 21, height: 21 });
-  }, [tab, dock, temp, filteredRows.length]);
-
-  // KPI values (mock)
-  const inboundToday = 34;
-  const outboundToday = 29;
-  const inTransit = baseRows.filter(
-    (d) => d.status === "Đang vận chuyển"
-  ).length;
-  const alerts = 2;
-  const capacityUsed = 72;
-
-  // Export CSV
-  const handleExport = () => {
-    const rows = filteredRows;
-    const header = [
-      "Mã đơn",
-      "Loại",
-      "Trạng thái",
-      "Khách hàng",
-      "Điểm đi",
-      "Điểm đến",
-      "Pallets",
-      "Khối lượng",
-      "Door",
-      "Xe/Container",
-      "Ngày",
-    ];
-    const lines = [header.join(",")].concat(
-      rows.map((o) =>
-        [
-          o.id,
-          o.type,
-          o.status,
-          o.customer,
-          o.from,
-          o.to,
-          o.pallets,
-          `${o.weight} ${o.unit}`,
-          o.docks,
-          o.carrier,
-          o.eta,
-        ]
-          .map((x) => `"${String(x).replace(/"/g, '""')}"`)
-          .join(",")
-      )
-    );
-    const blob = new Blob([lines.join("\n")], {
-      type: "text/csv;charset=utf-8;",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "warehouse_in_out.csv";
-    a.click();
-    URL.revokeObjectURL(url);
+function StatCard({ icon: Icon, label, value, sub, tone = "blue", delay = 0 }) {
+  const colors = {
+    blue: "from-blue-500/10 to-blue-500/5 border-blue-100 text-blue-600",
+    indigo: "from-indigo-500/10 to-indigo-500/5 border-indigo-100 text-indigo-600",
+    amber: "from-amber-500/10 to-amber-500/5 border-amber-100 text-amber-600",
+    rose: "from-rose-500/10 to-rose-500/5 border-rose-100 text-rose-600",
+    emerald: "from-emerald-500/10 to-emerald-500/5 border-emerald-100 text-emerald-600",
+  };
+  const iconColors = {
+    blue: "bg-blue-500 text-white shadow-blue-500/30",
+    indigo: "bg-indigo-500 text-white shadow-indigo-500/30",
+    amber: "bg-amber-500 text-white shadow-amber-500/30",
+    rose: "bg-rose-500 text-white shadow-rose-500/30",
+    emerald: "bg-emerald-500 text-white shadow-emerald-500/30",
   };
 
   return (
-    <div className="bg-slate-50 text-slate-900 min-h-screen">
-      <Sidebar />
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.4 }}
+      className={`relative overflow-hidden rounded-2xl p-5 border bg-gradient-to-br backdrop-blur-xl ${colors[tone]} hover:shadow-lg transition-all duration-300`}
+    >
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-sm font-medium text-slate-500 mb-1">{label}</p>
+          <h3 className="text-2xl font-bold text-slate-800">{value}</h3>
+          {sub && <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">{sub}</p>}
+        </div>
+        <div className={`p-3 rounded-xl shadow-lg ${iconColors[tone]}`}>
+          <Icon className="w-5 h-5" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
-      <main className="ml-20">
-        {/* ===== HEADER ===== */}
+/* ================== MAIN COMPONENT ================== */
+export default function WarehouseInOut() {
+  const [tab, setTab] = useState("all");
+  const [dock, setDock] = useState("Tất cả");
+  const [temp, setTemp] = useState("Tất cả");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Mock filtering
+  const filteredRows = useMemo(() => {
+    return MOCK_DATA.filter(item => {
+      const matchTab = tab === "all" || item.type === tab;
+      const matchDock = dock === "Tất cả" || item.docks === dock;
+      const matchTemp = temp === "Tất cả" || item.temp === temp;
+      return matchTab && matchDock && matchTemp;
+    });
+  }, [tab, dock, temp]);
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => setIsRefreshing(false), 800);
+  };
+
+  const handleExport = () => {
+    alert("Downloading CSV...");
+  };
+
+  return (
+    <div className="min-h-screen relative bg-[#f8fafc] dark:bg-[#0f172a] text-slate-900 transition-colors duration-500 overflow-hidden font-sans">
+      {/* Animated Background Mesh */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[10%] left-[10%] w-[40vw] h-[40vw] bg-blue-200/40 dark:bg-blue-900/20 rounded-full blur-[100px] animate-blob mix-blend-multiply dark:mix-blend-screen" />
+        <div className="absolute top-[20%] right-[10%] w-[35vw] h-[35vw] bg-indigo-200/40 dark:bg-indigo-900/20 rounded-full blur-[100px] animate-blob animation-delay-2000 mix-blend-multiply dark:mix-blend-screen" />
+        <div className="absolute -bottom-[10%] left-[30%] w-[45vw] h-[45vw] bg-purple-200/40 dark:bg-purple-900/20 rounded-full blur-[100px] animate-blob animation-delay-4000 mix-blend-multiply dark:mix-blend-screen" />
+      </div>
+
+      <Sidebar />
+      <div className="ml-0 md:ml-20 transition-all duration-300">
         <Topbar />
 
-        {/* ===== CONTENT ===== */}
-        <section className="p-6 md:p-8 space-y-6">
-          {/* Title & Controls */}
-          <div className="flex flex-col xl:flex-row xl:items-end xl:justify-between gap-4">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
-                Quản lý nhập / xuất kho
-              </h2>
-              <p className="text-slate-600">
-                Theo dõi real-time, KPI & công suất kho.
+        <main className="relative z-10 p-6 lg:p-10 max-w-[1600px] mx-auto space-y-8">
+
+          {/* Header Section */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="space-y-1"
+            >
+              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-300">
+                Quản lý kho vận
+              </h1>
+              <p className="text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                <Activity className="w-4 h-4 text-emerald-500" />
+                Real-time tracking Dashboard
               </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center gap-2" id="tabs">
-                <button
-                  onClick={() => setTab("all")}
-                  className={`tab-btn h-10 px-3 rounded-xl text-sm border ${
-                    tab === "all"
-                      ? "bg-slate-900 text-white border-slate-900"
-                      : "bg-white border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  Tất cả
-                </button>
-                <button
-                  onClick={() => setTab("in")}
-                  className={`tab-btn h-10 px-3 rounded-xl text-sm border ${
-                    tab === "in"
-                      ? "bg-slate-900 text-white border-slate-900"
-                      : "bg-white border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  Nhập kho
-                </button>
-                <button
-                  onClick={() => setTab("out")}
-                  className={`tab-btn h-10 px-3 rounded-xl text-sm border ${
-                    tab === "out"
-                      ? "bg-slate-900 text-white border-slate-900"
-                      : "bg-white border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  Xuất kho
-                </button>
-                <button
-                  onClick={() => setTab("hold")}
-                  className={`tab-btn h-10 px-3 rounded-xl text-sm border ${
-                    tab === "hold"
-                      ? "bg-slate-900 text-white border-slate-900"
-                      : "bg-white border-slate-200 hover:bg-slate-50"
-                  }`}
-                >
-                  Đang giữ tạm
-                </button>
-              </div>
+            </motion.div>
 
-              <select
-                value={dock}
-                onChange={(e) => setDock(e.target.value)}
-                className="h-10 rounded-xl border border-slate-200 bg-white px-3 text-sm"
-              >
-                {["Tất cả", "D1", "D2", "D3", "D4", "D5", "D6"].map((d) => (
-                  <option key={d}>{d}</option>
-                ))}
-              </select>
-
-              <select
-                value={temp}
-                onChange={(e) => setTemp(e.target.value)}
-                className="h-10 rounded-xl border border-slate-200 bg-white px-3 text-sm"
-              >
-                {["Tất cả", "Thường", "Mát", "Lạnh"].map((t) => (
-                  <option key={t}>{t}</option>
-                ))}
-              </select>
-
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-3"
+            >
               <button
-                onClick={() => feather.replace({ width: 21, height: 21 })}
-                className="h-10 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-sm flex items-center gap-2"
+                onClick={handleRefresh}
+                className={`p-2.5 rounded-xl bg-white/60 dark:bg-slate-800/60 backdrop-blur border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow transition-all ${isRefreshing ? 'animate-spin' : ''}`}
               >
-                <i data-feather="refresh-cw" className="w-4 h-4" />
-                <span>Tải lại</span>
+                <RefreshCw className="w-5 h-5 text-slate-600 dark:text-slate-300" />
               </button>
-            </div>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold shadow-lg hover:shadow-xl hover:bg-slate-800 dark:hover:bg-slate-100 transition-all">
+                <Upload className="w-4 h-4" /> Import Data
+              </button>
+            </motion.div>
           </div>
 
-          {/* KPI Row */}
-          <div className="grid md:grid-cols-5 gap-3" id="kpiRow">
-            <Stat
-              icon="package"
-              label="Đã nhập hôm nay"
-              value={inboundToday}
-              tone="in"
-            />
-            <Stat
-              icon="truck"
-              label="Đã xuất hôm nay"
-              value={outboundToday}
-              tone="out"
-            />
-            <Stat
-              icon="truck"
-              label="Đang vận chuyển"
-              value={inTransit}
-              tone="neutral"
-            />
-            <Stat
-              icon="alert-triangle"
-              label="Cảnh báo"
-              value={alerts}
-              sub="Thiếu chứng từ: 1 • Lệch khối lượng: 1"
-              tone="alert"
-            />
-            <div className="rounded-2xl p-4 border border-slate-200 bg-white">
-              <div className="flex items-center gap-2 text-sm text-slate-500">
-                <i data-feather="activity" className="w-4 h-4" />
-                Công suất kho
-              </div>
-              <div className="mt-2">
-                <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
-                    style={{ width: `${capacityUsed}%` }}
+          {/* KPI Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <StatCard icon={Package} label="Nhập kho hôm nay" value="34" sub="+12% so với hôm qua" tone="blue" delay={0.1} />
+            <StatCard icon={Truck} label="Xuất kho hôm nay" value="29" sub="Đang vận chuyển: 2" tone="indigo" delay={0.2} />
+            <StatCard icon={Clock} label="Đang giữ tạm" value="12" sub="Cần xử lý gấp: 3" tone="amber" delay={0.3} />
+            <StatCard icon={AlertTriangle} label="Cảnh báo" value="2" sub="Thiếu chứng từ" tone="rose" delay={0.4} />
+          </div>
+
+          {/* Main Content Area */}
+          <div className="grid grid-cols-12 gap-6 items-start">
+
+            {/* Left Column: Data & Filters (8 cols) */}
+            <div className="col-span-12 xl:col-span-9 space-y-6">
+
+              {/* Filter Bar */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="flex flex-wrap items-center gap-3 p-1.5 bg-white/60 dark:bg-slate-800/60 backdrop-blur-md border border-white/40 dark:border-white/10 rounded-2xl shadow-sm"
+              >
+                {['all', 'in', 'out', 'hold'].map((t) => (
+                  <button
+                    key={t}
+                    onClick={() => setTab(t)}
+                    className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${tab === t
+                        ? "text-white shadow-lg"
+                        : "text-slate-600 dark:text-slate-300 hover:bg-white/50"
+                      }`}
+                  >
+                    {tab === t && (
+                      <motion.div
+                        layoutId="activeTab"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl"
+                      />
+                    )}
+                    <span className="relative z-10 capitalize">
+                      {t === 'all' ? 'Tất cả' : t === 'in' ? 'Nhập kho' : t === 'out' ? 'Xuất kho' : 'Giữ tạm'}
+                    </span>
+                  </button>
+                ))}
+
+                <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1" />
+
+                <div className="flex items-center gap-2 px-2">
+                  <Filter className="w-4 h-4 text-slate-400" />
+                  <select
+                    value={dock}
+                    onChange={e => setDock(e.target.value)}
+                    className="bg-transparent text-sm font-medium text-slate-700 dark:text-slate-200 focus:outline-none cursor-pointer"
+                  >
+                    {["Tất cả", "D1", "D2", "D3", "D4", "D5", "D6"].map(d => <option key={d} value={d}>{d}</option>)}
+                  </select>
+                </div>
+
+                <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mx-1" />
+
+                <div className="relative flex-1 min-w-[200px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Tìm kiếm mã đơn, khách hàng..."
+                    className="w-full pl-9 pr-4 py-2 bg-transparent text-sm focus:outline-none placeholder:text-slate-400"
                   />
                 </div>
-              </div>
-              <div className="text-[12px] text-slate-500 mt-1">
-                {capacityUsed}% sử dụng • 1.450/2.000 pallets
-              </div>
-            </div>
-          </div>
+              </motion.div>
 
-          <div className="flex flex-col gap-6">
-            {/* Left 2/3 */}
-            <section className="w-full space-y-4">
               {/* Data Table */}
-              <div className="rounded-2xl bg-white border border-slate-200 shadow-soft overflow-hidden">
-                <div className="px-5 md:px-6 py-4 bg-gradient-to-r from-[#8CC2FF] via-[#6AA8FF] to-[#2A60FF] text-white flex items-center justify-between">
-                  <div className="flex items-center gap-2 text-sm">
-                    <div className="w-8 h-8 rounded-xl bg-white/20 grid place-items-center">
-                      <i data-feather="package" className="w-[18px] h-[18px]" />
-                    </div>
-                    <div>
-                      <div className="opacity-90">Kho trung tâm</div>
-                      <div className="font-semibold">Gemadept Logistics</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button className="h-9 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm flex items-center gap-2">
-                      <i data-feather="upload" className="w-4 h-4" /> Import
-                    </button>
-                    <button
-                      onClick={handleExport}
-                      className="h-9 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm flex items-center gap-2"
-                    >
-                      <i data-feather="download" className="w-4 h-4" /> Export
-                    </button>
-                  </div>
-                </div>
-
-                <div className="overflow-x-auto thin-scrollbar">
-                  <table className="min-w-full text-sm">
-                    <thead className="bg-slate-50 text-slate-600">
-                      <tr>
-                        {[
-                          "MÃ ĐƠN",
-                          "LOẠI",
-                          "TRẠNG THÁI",
-                          "KHÁCH HÀNG",
-                          "ĐIỂM ĐI",
-                          "ĐIỂM ĐẾN",
-                          "PALLETS",
-                          "KHỐI LƯỢNG",
-                          "DOOR",
-                          "XE/CONTAINER",
-                          "NGÀY",
-                        ].map((h) => (
-                          <th
-                            key={h}
-                            className="text-left text-[11px] tracking-wider font-semibold uppercase px-5 py-3"
-                          >
-                            {h}
-                          </th>
-                        ))}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-2xl shadow-lg overflow-hidden flex flex-col min-h-[500px]"
+              >
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="border-b border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/50 text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                        <th className="px-6 py-4">Mã đơn</th>
+                        <th className="px-6 py-4">Loại / Trạng thái</th>
+                        <th className="px-6 py-4">Thông tin</th>
+                        <th className="px-6 py-4">Chi tiết hàng</th>
+                        <th className="px-6 py-4">Vận chuyển</th>
+                        <th className="px-6 py-4 text-right">ETA</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {filteredRows.length ? (
-                        filteredRows.map((o) => (
-                          <tr key={o.id} className="hover:bg-slate-50/70">
-                            <td className="px-5 py-3 align-middle font-medium text-slate-900">
-                              <span className="inline-block max-w-[140px] truncate align-middle">
-                                {o.id}
+                    <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
+                      {filteredRows.length > 0 ? (
+                        filteredRows.map((item, idx) => (
+                          <motion.tr
+                            key={item.id}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 * idx }}
+                            className="group hover:bg-blue-50/40 dark:hover:bg-slate-700/40 transition-colors"
+                          >
+                            <td className="px-6 py-4">
+                              <span className="font-medium text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">
+                                {item.id}
                               </span>
                             </td>
-                            <td className="px-5 py-3 align-middle">
-                              <span
-                                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs ring-1 ${
-                                  o.type === "in"
-                                    ? "bg-blue-50 text-blue-700 ring-blue-200"
-                                    : "bg-indigo-50 text-indigo-700 ring-indigo-200"
-                                }`}
-                              >
-                                {o.type === "in" ? "Nhập" : "Xuất"}
-                              </span>
+                            <td className="px-6 py-4">
+                              <div className="space-y-1.5">
+                                <StatusBadge status={item.status} />
+                                <div className="text-xs text-slate-500 flex items-center gap-1">
+                                  <span className={`w-1.5 h-1.5 rounded-full ${item.type === 'in' ? 'bg-emerald-400' : 'bg-orange-400'}`} />
+                                  {item.type === 'in' ? 'Nhập kho' : 'Xuất kho'}
+                                </div>
+                              </div>
                             </td>
-                            <td className="px-5 py-3 align-middle">
-                              <StatusBadge status={o.status} />
+                            <td className="px-6 py-4">
+                              <div className="text-sm font-medium text-slate-800 dark:text-slate-200">{item.customer}</div>
+                              <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-1">
+                                {item.from} <ArrowRight className="w-3 h-3" /> {item.to}
+                              </div>
                             </td>
-                            <td className="px-5 py-3 align-middle">
-                              {o.customer}
+                            <td className="px-6 py-4">
+                              <div className="text-sm text-slate-700 dark:text-slate-300">
+                                {item.weight.toLocaleString()} {item.unit}
+                              </div>
+                              <div className="text-xs text-slate-500 mt-0.5">
+                                {item.pallets} Pallets • {item.temp}
+                              </div>
                             </td>
-                            <td className="px-5 py-3 align-middle">{o.from}</td>
-                            <td className="px-5 py-3 align-middle">{o.to}</td>
-                            <td className="px-5 py-3 align-middle">
-                              {o.pallets}
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-2">
+                                <Truck className="w-4 h-4 text-slate-400" />
+                                <span className="text-sm">{item.carrier}</span>
+                              </div>
+                              <div className="text-xs text-slate-500 mt-0.5 pl-6">
+                                Dock: <span className="font-semibold text-slate-700 dark:text-slate-300">{item.docks}</span>
+                              </div>
                             </td>
-                            <td className="px-5 py-3 align-middle">
-                              {o.weight.toLocaleString()} {o.unit}
+                            <td className="px-6 py-4 text-right font-medium text-slate-600 dark:text-slate-400">
+                              {item.eta}
                             </td>
-                            <td className="px-5 py-3 align-middle">
-                              {o.docks}
-                            </td>
-                            <td className="px-5 py-3 align-middle">
-                              {o.carrier}
-                            </td>
-                            <td className="px-5 py-3 align-middle text-right pr-5 text-slate-600">
-                              {o.eta}
-                            </td>
-                          </tr>
+                          </motion.tr>
                         ))
                       ) : (
                         <tr>
-                          <td
-                            colSpan={11}
-                            className="px-5 py-6 text-center text-slate-500"
-                          >
-                            Không có bản ghi phù hợp.
+                          <td colSpan={6} className="px-6 py-12 text-center text-slate-400 italic">
+                            Không có dữ liệu phù hợp
                           </td>
                         </tr>
                       )}
                     </tbody>
                   </table>
                 </div>
-              </div>
-            </section>
+              </motion.div>
+            </div>
 
-            {/* Right  */}
-            <aside className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              {/* Inventory snapshot */}
-              <div className="rounded-2xl p-5 border border-slate-200 bg-white">
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-                  <i data-feather="box" className="w-4 h-4" /> Tồn kho nhanh
-                </div>
-                <div className="mt-3 space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Kệ thường</span>
-                    <span className="font-medium">1.120 pallets</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Kho mát</span>
-                    <span className="font-medium">210 pallets</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Kho lạnh</span>
-                    <span className="font-medium">120 pallets</span>
-                  </div>
-                </div>
-                <div className="mt-3">
-                  <div className="text-xs text-slate-600 mb-1">
-                    Tỷ lệ lấp đầy
-                  </div>
-                  <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
-                      style={{ width: "72%" }}
-                    />
-                  </div>
-                </div>
-              </div>
+            {/* Right Column: Widgets (4 cols) */}
+            <div className="col-span-12 xl:col-span-3 space-y-6">
 
-              {/* Staff */}
-              <div className="rounded-2xl p-5 border border-slate-200 bg-white">
-                <div className="flex items-center gap-2 text-sm text-slate-600">
-                  <i data-feather="users" className="w-4 h-4" /> Nhân sự ca hôm
-                  nay
+              {/* Inventory Widget */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.7 }}
+                className="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-2xl p-6 shadow-lg"
+              >
+                <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                  <Box className="w-5 h-5 text-indigo-500" />
+                  Tồn kho nhanh
+                </h3>
+
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-500">Tỷ lệ lấp đầy</span>
+                      <span className="font-bold text-slate-800">72%</span>
+                    </div>
+                    <div className="h-2.5 w-full bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: "72%" }}
+                        transition={{ duration: 1, delay: 1 }}
+                        className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full"
+                      />
+                    </div>
+                    <p className="text-xs text-slate-400 text-right">1.450 / 2.000 slots</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 pt-2">
+                    <div className="p-3 rounded-xl bg-orange-50 dark:bg-slate-700/50 border border-orange-100 dark:border-white/5">
+                      <div className="text-xs text-slate-500 mb-1">Kho mát</div>
+                      <div className="font-bold text-slate-800 dark:text-slate-200">210 Plt</div>
+                    </div>
+                    <div className="p-3 rounded-xl bg-cyan-50 dark:bg-slate-700/50 border border-cyan-100 dark:border-white/5">
+                      <div className="text-xs text-slate-500 mb-1">Kho lạnh</div>
+                      <div className="font-bold text-slate-800 dark:text-slate-200">120 Plt</div>
+                    </div>
+                  </div>
                 </div>
-                <ul className="mt-3 space-y-2 text-sm">
-                  <li className="flex justify-between">
-                    <span>Ca sáng</span>
-                    <span className="text-slate-700">
-                      12 NV (2 QC, 1 Supervisor)
-                    </span>
-                  </li>
-                  <li className="flex justify-between">
-                    <span>Ca chiều</span>
-                    <span className="text-slate-700">
-                      10 NV (1 QC, 1 Supervisor)
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </aside>
+              </motion.div>
+
+              {/* Staff Widget */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.8 }}
+                className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden"
+              >
+                <div className="relative z-10">
+                  <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
+                    <Users className="w-5 h-5 text-emerald-400" />
+                    Nhân sự ca
+                  </h3>
+                  <ul className="space-y-4">
+                    <li className="flex justify-between items-center border-b border-white/10 pb-3">
+                      <span className="text-sm opacity-80">Ca sáng (06:00 - 14:00)</span>
+                      <span className="font-bold text-emerald-400">12 NV</span>
+                    </li>
+                    <li className="flex justify-between items-center border-b border-white/10 pb-3">
+                      <span className="text-sm opacity-80">Ca chiều (14:00 - 22:00)</span>
+                      <span className="font-bold text-blue-400">10 NV</span>
+                    </li>
+                  </ul>
+                  <button className="w-full mt-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-colors text-sm font-medium">
+                    Xem lịch làm việc
+                  </button>
+                </div>
+
+                {/* Decorative Circle */}
+                <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-emerald-500/20 rounded-full blur-2xl" />
+              </motion.div>
+
+            </div>
+
           </div>
-        </section>
 
-        <footer className="text-center text-slate-400 text-xs mt-4 mb-6">
-          © 2025 Gemadept – Trang quản lý nhập / xuất kho.
-        </footer>
-      </main>
-    </div>
-  );
-}
-
-/* =============== Subcomponents =============== */
-function Stat({ icon, label, value, sub, tone = "neutral" }) {
-  const toneMap = {
-    neutral: "bg-slate-50",
-    in: "bg-blue-50",
-    out: "bg-indigo-50",
-    alert: "bg-rose-50",
-  };
-  return (
-    <div className={`rounded-2xl p-4 border border-slate-200 ${toneMap[tone]}`}>
-      <div className="flex items-center gap-2 text-sm text-slate-500">
-        <i data-feather={icon} className="w-4 h-4" />
-        {label}
+          <footer className="text-center text-slate-400 text-sm py-8">
+            © 2025 Gemadept Logistics. Powered by <span className="font-semibold text-slate-600 dark:text-slate-300">SCM Team</span>.
+          </footer>
+        </main>
       </div>
-      <div className="mt-1 text-2xl font-bold tracking-tight">{value}</div>
-      {sub ? (
-        <div className="text-[12px] text-slate-500 mt-1">{sub}</div>
-      ) : null}
-    </div>
-  );
-}
 
-function StatusBadge({ status }) {
-  const map = {
-    "Đã xuất kho": "bg-red-50 text-red-600 ring-red-200",
-    "Lưu kho": "bg-emerald-50 text-emerald-600 ring-emerald-200",
-    "Đang vận chuyển": "bg-blue-50 text-blue-600 ring-blue-200",
-  };
-  const cls = map[status] || "bg-slate-50 text-slate-700 ring-slate-200";
-  return (
-    <span
-      className={`inline-flex items-center justify-center rounded-lg px-2.5 py-1 text-xs font-medium ring-1 min-w-[112px] ${cls}`}
-    >
-      {status}
-    </span>
+      <style jsx>{`
+        @keyframes blob {
+          0% { transform: translate(0px, 0px) scale(1); }
+          33% { transform: translate(30px, -50px) scale(1.1); }
+          66% { transform: translate(-20px, 20px) scale(0.9); }
+          100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
+    </div>
   );
 }

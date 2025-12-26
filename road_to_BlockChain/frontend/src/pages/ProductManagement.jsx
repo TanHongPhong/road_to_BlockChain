@@ -14,8 +14,10 @@ import {
   PlusCircle,
   ImageOff,
   ArrowLeft,
+  Truck,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { FastTrackDB } from "../utils/fast_track_db";
 
 /* ====== Subcomponents ====== */
 function StatusBadge({ status }) {
@@ -25,15 +27,15 @@ function StatusBadge({ status }) {
   };
   return (
     <span
-      className={`px-3 py-1 rounded-full text-[13px] font-semibold ${map[status] || "bg-slate-100 text-slate-700 ring-1 ring-slate-200"
-        }`}
+      className={`px - 3 py - 1 rounded - full text - [13px] font - semibold ${map[status] || "bg-slate-100 text-slate-700 ring-1 ring-slate-200"
+        } `}
     >
       {status}
     </span>
   );
 }
 
-function ProductCard({ p, onEdit, onDelete }) {
+function ProductCard({ p, onEdit, onDelete, onCreateOrder }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -90,23 +92,33 @@ function ProductCard({ p, onEdit, onDelete }) {
       </div>
 
       {/* Actions */}
-      <div className="px-5 py-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/50 flex items-center justify-between">
-        <div className="text-[13px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
-          <QrCode className="w-4 h-4" />
-          {p.qrCode}
+      <div className="px-5 py-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/70 dark:bg-slate-800/50">
+        <div className="flex items-center justify-between mb-3">
+          <div className="text-[13px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
+            <QrCode className="w-4 h-4" />
+            {p.qrCode}
+          </div>
         </div>
+
         <div className="flex gap-2">
+          <button
+            onClick={() => onCreateOrder(p)}
+            className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-800/50 font-medium text-[14px] transition-colors"
+            title="Tạo vận đơn nhanh"
+          >
+            <Truck className="w-4 h-4" /> Vận đơn
+          </button>
           <button
             onClick={() => onEdit(p)}
             className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-800/50 font-medium text-[14px] transition-colors"
           >
-            <Edit3 className="w-4 h-4" /> Sửa
+            <Edit3 className="w-4 h-4" />
           </button>
           <button
             onClick={() => onDelete(p.id)}
             className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-800/50 font-medium text-[14px] transition-colors"
           >
-            <Trash2 className="w-4 h-4" /> Xóa
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -119,7 +131,74 @@ export default function ProductManagementPage() {
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("Tất cả");
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "Táo đỏ Fuji",
+      qrCode: "QR-TAO-001",
+      supplier: "Nông trại Đà Lạt Xanh",
+      type: "Trái cây tươi",
+      date: "27/12/2024",
+      note: "Táo đỏ Fuji nhập khẩu, bảo quản lạnh 2-4°C, hạn sử dụng 14 ngày",
+      status: "Đã kiểm định",
+      image: "/assets/tao do.jpg",
+    },
+    {
+      id: 2,
+      name: "Lê vàng",
+      qrCode: "QR-LE-002",
+      supplier: "Vườn Trái Cây Mekong",
+      type: "Trái cây tươi",
+      date: "27/12/2024",
+      note: "Lê vàng tươi ngọt, giàu chất xơ, bảo quản lạnh 3-5°C, hạn sử dụng 10 ngày",
+      status: "Đã kiểm định",
+      image: "/assets/trai le.jpg",
+    },
+    {
+      id: 3,
+      name: "Cam vàng Úc",
+      qrCode: "QR-CAM-003",
+      supplier: "Nhập khẩu Australia Fresh",
+      type: "Trái cây nhập khẩu",
+      date: "26/12/2024",
+      note: "Cam vàng Úc ngọt thanh, giàu Vitamin C, bảo quản 5-8°C, hạn sử dụng 21 ngày",
+      status: "Đã kiểm định",
+      image: "/assets/trai cam.jpg",
+    },
+    {
+      id: 4,
+      name: "Quýt Tangerine",
+      qrCode: "QR-QUYT-004",
+      supplier: "Nông trại Cần Thơ",
+      type: "Trái cây tươi",
+      date: "26/12/2024",
+      note: "Quýt Tangerine vỏ mỏng, ngọt đậm đà, bảo quản 4-6°C, hạn sử dụng 14 ngày",
+      status: "Đang chờ kiểm định",
+      image: "/assets/trai quyt.jpg",
+    },
+    {
+      id: 5,
+      name: "Hồng giòn (Crispy Persimmons)",
+      qrCode: "QR-HONG-005",
+      supplier: "Vườn Hồng Đà Lạt",
+      type: "Trái cây mùa",
+      date: "25/12/2024",
+      note: "Hồng giòn ngọt thanh, giòn tan, bảo quản lạnh 2-4°C, hạn sử dụng 14 ngày",
+      status: "Đã kiểm định",
+      image: "/assets/trai hong gion.jpg",
+    },
+    {
+      id: 6,
+      name: "Mận Water Apple (Roi)",
+      qrCode: "QR-MAN-006",
+      supplier: "Nông trại Bình Thuận",
+      type: "Trái cây nhiệt đới",
+      date: "25/12/2024",
+      note: "Mận Water Apple giòn ngọt, nhiều nước, mát lạnh, bảo quản 5-7°C, hạn sử dụng 10 ngày",
+      status: "Đã kiểm định",
+      image: "/assets/qua roi.jpg",
+    },
+  ]);
 
   const filtered = useMemo(() => {
     const key = search.trim().toLowerCase();
@@ -137,6 +216,14 @@ export default function ProductManagementPage() {
   const handleDelete = (id) =>
     setProducts((prev) => prev.filter((p) => p.id !== id));
   const handleEdit = (p) => alert(`Chỉnh sửa: ${p.name} (phát triển sau)`);
+
+  const handleCreateOrder = (p) => {
+    if (confirm(`Tạo vận đơn cho sản phẩm "${p.name}"?`)) {
+      FastTrackDB.createOrder(p);
+      alert("Đã tạo vận đơn thành công! Chuyển sang vai trò 'Công ty vận tải' để kiểm tra.");
+    }
+  };
+
   const resetFilter = () => {
     setSearch("");
     setFilterType("Tất cả");
@@ -248,6 +335,7 @@ export default function ProductManagementPage() {
                   p={p}
                   onEdit={handleEdit}
                   onDelete={handleDelete}
+                  onCreateOrder={handleCreateOrder}
                 />
               ))}
             </div>

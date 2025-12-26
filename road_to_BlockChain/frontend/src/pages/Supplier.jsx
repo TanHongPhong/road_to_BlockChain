@@ -19,6 +19,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { FastTrackDB } from "../utils/fast_track_db";
 
 // Register Chart.js once
 Chart.register(
@@ -416,14 +417,12 @@ function LatestShippingTable({ rows = [] }) {
                   </td>
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-semibold text-xs ${
-                        STATUS_STYLES[r.status]
-                      }`}
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-semibold text-xs ${STATUS_STYLES[r.status]
+                        }`}
                     >
                       <span
-                        className={`w-1.5 h-1.5 rounded-full ${
-                          DOT_STYLES[r.status]
-                        }`}
+                        className={`w-1.5 h-1.5 rounded-full ${DOT_STYLES[r.status]
+                          }`}
                       ></span>
                       {r.status}
                     </span>
@@ -513,11 +512,10 @@ function OrderCard({ req, onDetail }) {
 
   return (
     <article
-      className={`rounded-xl p-4 ${
-        req.isNew
+      className={`rounded-xl p-4 ${req.isNew
           ? "border-2 border-amber-300 bg-amber-50/70 relative overflow-hidden"
           : "border border-slate-200 bg-white hover:border-blue-300"
-      }`}
+        }`}
     >
       {req.isNew && (
         <div className="absolute top-0 right-0 text-xs font-bold text-amber-800 bg-amber-300 px-2 py-0.9 rounded-bl-lg">
@@ -547,15 +545,13 @@ function OrderCard({ req, onDetail }) {
         </div>
       </div>
       <div
-        className={`mt-3 pt-3 ${
-          req.isNew ? "border-t border-amber-200" : "border-t border-slate-100"
-        } flex items-center justify-between`}
+        className={`mt-3 pt-3 ${req.isNew ? "border-t border-amber-200" : "border-t border-slate-100"
+          } flex items-center justify-between`}
       >
         <div className="flex items-center gap-2">
           <div
-            className={`w-7 h-7 rounded-full grid place-items-center font-semibold text-xs ${
-              AVATAR_TONES[req.avatarTone]
-            }`}
+            className={`w-7 h-7 rounded-full grid place-items-center font-semibold text-xs ${AVATAR_TONES[req.avatarTone]
+              }`}
           >
             {req.initials}
           </div>
@@ -645,6 +641,14 @@ function OrderRequests({ list = [], onDetail }) {
 // --------------------------------------
 export default function Supplier() {
   const [sheet, setSheet] = useState({ open: false, data: null });
+  const [requests, setRequests] = useState(ORDER_REQUESTS);
+
+  useEffect(() => {
+    const localOrders = FastTrackDB.getOrders();
+    if (localOrders && localOrders.length > 0) {
+      setRequests((prev) => [...localOrders, ...ORDER_REQUESTS]);
+    }
+  }, []);
 
   const openSheet = (data) => {
     setSheet({ open: true, data });
@@ -911,7 +915,7 @@ export default function Supplier() {
             </div>
 
             <aside className="space-y-8 h-full">
-              <OrderRequests list={ORDER_REQUESTS} onDetail={openSheet} />
+              <OrderRequests list={requests} onDetail={openSheet} />
             </aside>
           </div>
 
