@@ -20,14 +20,14 @@ import {
 
 /* ===================== DATA NHÚNG TRONG FILE ===================== */
 const DASHBOARD_DATA = {
-  title: "SCM System",
+  title: "Hệ Thống SCM",
   pagesByRole: {
     supplier: [
       {
         name: "Quản lý hàng hóa",
         path: "/supplier-product-management",
         icon: "Building2",
-        desc: "Manage product inventory & details",
+        desc: "Quản lý kho hàng & chi tiết sản phẩm",
         color: "text-blue-500",
         bg: "bg-blue-500/10",
       },
@@ -35,7 +35,7 @@ const DASHBOARD_DATA = {
         name: "Camera giám sát",
         path: "/supplier-camera-monitoring",
         icon: "Home",
-        desc: "Monitor facility via camera",
+        desc: "Giám sát cơ sở qua camera",
         color: "text-purple-500",
         bg: "bg-purple-500/10",
       },
@@ -43,17 +43,17 @@ const DASHBOARD_DATA = {
         name: "Đơn hàng đã xuất kho",
         path: "/order-tracking-customer",
         icon: "ClipboardList",
-        desc: "Track outbound orders",
+        desc: "Theo dõi đơn hàng xuất kho",
         color: "text-green-500",
         bg: "bg-green-500/10",
       },
     ],
     transport_company: [
       {
-        name: "Dashboard",
+        name: "Tổng quan",
         path: "/supplier",
         icon: "Truck",
-        desc: "Main transport overview",
+        desc: "Tổng quan vận tải chính",
         color: "text-indigo-500",
         bg: "bg-indigo-500/10",
       },
@@ -61,7 +61,7 @@ const DASHBOARD_DATA = {
         name: "Theo dõi đội xe",
         path: "/vehicle-list",
         icon: "Truck",
-        desc: "Manage fleet status",
+        desc: "Quản lý trạng thái đội xe",
         color: "text-orange-500",
         bg: "bg-orange-500/10",
       },
@@ -69,7 +69,7 @@ const DASHBOARD_DATA = {
         name: "Theo dõi đơn hàng",
         path: "/order-tracking",
         icon: "ClipboardList",
-        desc: "Track shipments real-time",
+        desc: "Theo dõi vận chuyển thời gian thực",
         color: "text-teal-500",
         bg: "bg-teal-500/10",
       },
@@ -79,7 +79,7 @@ const DASHBOARD_DATA = {
         name: "Quản lý xe",
         path: "/vehicle-list",
         icon: "Truck",
-        desc: "My vehicle status",
+        desc: "Trạng thái xe của tôi",
         color: "text-yellow-500",
         bg: "bg-yellow-500/10",
       }
@@ -89,7 +89,7 @@ const DASHBOARD_DATA = {
         name: "Quản lý kho hàng",
         path: "/warehouse-in-out",
         icon: "Warehouse",
-        desc: "General warehouse operations",
+        desc: "Hoạt động kho chung",
         color: "text-red-500",
         bg: "bg-red-500/10",
       },
@@ -97,7 +97,7 @@ const DASHBOARD_DATA = {
         name: "Nhập kho",
         path: "/camera-warehouse-in",
         icon: "Warehouse",
-        desc: "Inbound goods processing",
+        desc: "Xử lý hàng nhập kho",
         color: "text-pink-500",
         bg: "bg-pink-500/10",
       },
@@ -105,7 +105,7 @@ const DASHBOARD_DATA = {
         name: "Xuất kho",
         path: "/camera-warehouse-out",
         icon: "Warehouse",
-        desc: "Outbound goods processing",
+        desc: "Xử lý hàng xuất kho",
         color: "text-cyan-500",
         bg: "bg-cyan-500/10",
       },
@@ -115,7 +115,7 @@ const DASHBOARD_DATA = {
         name: "Quản lý siêu thị",
         path: "/warehouse-in-out",
         icon: "Warehouse",
-        desc: "Supermarket inventory",
+        desc: "Kho hàng siêu thị",
         color: "text-emerald-500",
         bg: "bg-emerald-500/10",
       },
@@ -123,7 +123,7 @@ const DASHBOARD_DATA = {
         name: "Đưa hàng lên kệ",
         path: "/mobile-shelf-putaway",
         icon: "Warehouse",
-        desc: "Shelf replenishment",
+        desc: "Bổ sung hàng lên kệ",
         color: "text-lime-500",
         bg: "bg-lime-500/10",
       },
@@ -131,7 +131,7 @@ const DASHBOARD_DATA = {
         name: "Nhập kho",
         path: "/supermarket-receiving",
         icon: "Warehouse",
-        desc: "Receive goods from transport",
+        desc: "Nhận hàng từ vận chuyển",
         color: "text-sky-500",
         bg: "bg-sky-500/10",
       },
@@ -141,7 +141,7 @@ const DASHBOARD_DATA = {
         name: "Thông tin sản phẩm",
         path: "/product-infomation",
         icon: "Home",
-        desc: "Browse product catalog",
+        desc: "Duyệt danh mục sản phẩm",
         color: "text-violet-500",
         bg: "bg-violet-500/10",
       },
@@ -149,7 +149,7 @@ const DASHBOARD_DATA = {
         name: "Quét QR",
         path: "/user-QR",
         icon: "Truck",
-        desc: "Scan product QR codes",
+        desc: "Quét mã QR sản phẩm",
         color: "text-rose-500",
         bg: "bg-rose-500/10",
       },
@@ -247,8 +247,8 @@ export default function RoleDashboard() {
               </div>
               {sidebarOpen && (
                 <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Welcome back,</p>
-                  <p className="font-bold text-gray-800 dark:text-gray-100 capitalize">{role || "User"}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Xin chào,</p>
+                  <p className="font-bold text-gray-800 dark:text-gray-100 capitalize">{role || "Khách"}</p>
                 </div>
               )}
             </div>
@@ -257,7 +257,7 @@ export default function RoleDashboard() {
           {/* Navigation Items */}
           <div className="flex-1 overflow-y-auto px-4 space-y-2 custom-scrollbar">
             {pages.length === 0 ? (
-              sidebarOpen && <div className="text-center text-gray-400 mt-10">No pages available</div>
+              sidebarOpen && <div className="text-center text-gray-400 mt-10">Chưa có trang nào</div>
             ) : (
               pages.map((item, i) => (
                 <button
@@ -293,7 +293,7 @@ export default function RoleDashboard() {
               className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-all text-gray-600 dark:text-gray-300"
             >
               {darkMode ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5" />}
-              {sidebarOpen && <span>{darkMode ? "Light Mode" : "Dark Mode"}</span>}
+              {sidebarOpen && <span>{darkMode ? "Chế độ sáng" : "Chế độ tối"}</span>}
             </button>
 
             <button
@@ -304,7 +304,7 @@ export default function RoleDashboard() {
               className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-all"
             >
               <LogOut className="w-5 h-5" />
-              {sidebarOpen && <span>Sign Out</span>}
+              {sidebarOpen && <span>Đăng xuất</span>}
             </button>
           </div>
         </motion.aside>
@@ -318,7 +318,7 @@ export default function RoleDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-3xl font-bold text-slate-800 dark:text-white"
               >
-                Overview
+                Tổng Quan
               </motion.h2>
               <motion.p
                 initial={{ opacity: 0 }}
@@ -326,7 +326,7 @@ export default function RoleDashboard() {
                 transition={{ delay: 0.1 }}
                 className="text-slate-500 dark:text-slate-400"
               >
-                Manage your supply chain activities efficiently.
+                Quản lý các hoạt động chuỗi cung ứng của bạn một cách hiệu quả.
               </motion.p>
             </div>
 
@@ -337,7 +337,7 @@ export default function RoleDashboard() {
               className="hidden md:flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors"
             >
               <ArrowLeftCircle className="w-4 h-4" />
-              Switch Role
+              Đổi Vai Trò
             </motion.button>
           </header>
 
@@ -369,7 +369,7 @@ export default function RoleDashboard() {
                     {item.name}
                   </h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
-                    {item.desc || "Access this module to manage your tasks."}
+                    {item.desc || "Truy cập module này để quản lý công việc."}
                   </p>
                 </div>
               </motion.div>
@@ -383,7 +383,7 @@ export default function RoleDashboard() {
               <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center mb-3">
                 <div className="text-2xl text-gray-400">+</div>
               </div>
-              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Add Shortcut (Coming Soon)</p>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Thêm lối tắt (Sắp ra mắt)</p>
             </motion.div>
 
           </motion.div>

@@ -11,8 +11,8 @@ export default function HomePage() {
   const roles = [
     {
       id: "supplier",
-      label: "Supplier",
-      desc: "Manage products & supplies",
+      label: "Nhà Cung Cấp",
+      desc: "Quản lý sản phẩm & nguồn hàng",
       icon: <Building2 className="w-8 h-8" />,
       color: "text-blue-500",
       bg: "bg-blue-100 dark:bg-blue-900/30",
@@ -20,8 +20,8 @@ export default function HomePage() {
     },
     {
       id: "transport_company",
-      label: "Transport Company",
-      desc: "Logistics & fleet management",
+      label: "Công Ty Vận Tải",
+      desc: "Điều phối vận chuyển & đội xe",
       icon: <Truck className="w-8 h-8" />,
       color: "text-purple-500",
       bg: "bg-purple-100 dark:bg-purple-900/30",
@@ -29,8 +29,8 @@ export default function HomePage() {
     },
     {
       id: "warehouse",
-      label: "Warehouse",
-      desc: "Inventory & storage control",
+      label: "Kho Hàng",
+      desc: "Kiểm soát kho & lưu trữ",
       icon: <Warehouse className="w-8 h-8" />,
       color: "text-orange-500",
       bg: "bg-orange-100 dark:bg-orange-900/30",
@@ -38,8 +38,8 @@ export default function HomePage() {
     },
     {
       id: "super_market",
-      label: "Super Market",
-      desc: "Retail & sales tracking",
+      label: "Siêu Thị",
+      desc: "Theo dõi bán lẻ & đơn hàng",
       icon: <Warehouse className="w-8 h-8" />,
       color: "text-green-500",
       bg: "bg-green-100 dark:bg-green-900/30",
@@ -47,8 +47,8 @@ export default function HomePage() {
     },
     {
       id: "user",
-      label: "User",
-      desc: "View products & orders",
+      label: "Người Dùng Cuối",
+      desc: "Xem sản phẩm & đặt hàng",
       icon: <UserCog className="w-8 h-8" />,
       color: "text-pink-500",
       bg: "bg-pink-100 dark:bg-pink-900/30",
@@ -56,8 +56,8 @@ export default function HomePage() {
     },
     {
       id: "driver",
-      label: "Driver",
-      desc: "Delivery & route updates",
+      label: "Tài Xế",
+      desc: "Cập nhật lộ trình giao hàng",
       icon: <Truck className="w-8 h-8" />,
       color: "text-yellow-500",
       bg: "bg-yellow-100 dark:bg-yellow-900/30",
@@ -131,13 +131,13 @@ export default function HomePage() {
                 transition={{ delay: 0.2 }}
               >
                 <span className="inline-block py-1 px-3 rounded-full bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-300 text-sm font-semibold mb-4 tracking-wide uppercase">
-                  Logistics Dashboard
+                  Bảng Điều Khiển Logistics
                 </span>
                 <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 mb-4 drop-shadow-sm">
-                  Supply Chain Management
+                  Quản Lý Chuỗi Cung Ứng
                 </h1>
                 <p className="text-slate-600 dark:text-slate-300 text-lg max-w-2xl mx-auto">
-                  Select your role to access the ecosystem securely and efficiently.
+                  Vui lòng chọn vai trò để truy cập hệ thống một cách an toàn và hiệu quả.
                 </p>
               </motion.div>
             </div>
@@ -159,8 +159,8 @@ export default function HomePage() {
                   <button
                     onClick={() => setRole(r.id)}
                     className={`w-full group relative flex flex-col items-center p-6 rounded-2xl border-2 transition-all duration-300 ${role === r.id
-                        ? `border-${r.color.split("-")[1]}-500 bg-white dark:bg-slate-800 shadow-xl ring-2 ring-offset-2 ring-indigo-500 dark:ring-offset-slate-900`
-                        : "border-transparent bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-lg"
+                      ? `border-${r.color.split("-")[1]}-500 bg-white dark:bg-slate-800 shadow-xl ring-2 ring-offset-2 ring-indigo-500 dark:ring-offset-slate-900`
+                      : "border-transparent bg-white/50 dark:bg-slate-800/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-lg"
                       } ${r.border}`}
                   >
                     <div
@@ -193,11 +193,11 @@ export default function HomePage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={handleContinue}
                 className={`flex items-center gap-3 px-10 py-4 rounded-xl text-lg font-bold text-white shadow-xl transition-all duration-300 ${role
-                    ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-indigo-500/30 cursor-pointer"
-                    : "bg-slate-300 dark:bg-slate-700 cursor-not-allowed opacity-70"
+                  ? "bg-gradient-to-r from-indigo-600 to-purple-600 hover:shadow-indigo-500/30 cursor-pointer"
+                  : "bg-slate-300 dark:bg-slate-700 cursor-not-allowed opacity-70"
                   }`}
               >
-                Continue Access
+                Tiếp Tục Truy Cập
                 <ArrowRight className={`w-5 h-5 ${role ? "animate-pulse" : ""}`} />
               </motion.button>
             </div>
@@ -206,7 +206,7 @@ export default function HomePage() {
 
           {/* Footer */}
           <div className="text-center mt-6 text-slate-500 dark:text-slate-400 text-sm">
-            &copy; 2025 BlockChain Logistics. Powered by Web 3.0 Technology.
+            &copy; 2025 BlockChain Logistics. Vận hành bởi Công nghệ Web 3.0.
           </div>
         </motion.div>
       </div>
