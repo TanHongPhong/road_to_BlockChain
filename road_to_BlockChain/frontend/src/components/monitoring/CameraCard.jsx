@@ -10,7 +10,7 @@ import {
   Camera,
 } from "lucide-react";
 
-export function CameraCard({ className = "", cameraId = "A01" }) {
+export function CameraCard({ className = "", cameraId = "A01", showControls = true }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const streamRef = useRef(null);
@@ -174,9 +174,8 @@ export function CameraCard({ className = "", cameraId = "A01" }) {
           </span>
           <span className="inline-flex items-center gap-2 text-white/90 text-xs">
             <span
-              className={`inline-block w-2 h-2 rounded-full ${
-                isStreaming ? "bg-emerald-400" : "bg-slate-400"
-              }`}
+              className={`inline-block w-2 h-2 rounded-full ${isStreaming ? "bg-emerald-400" : "bg-slate-400"
+                }`}
             />
             {isStreaming ? "Online" : "Offline"}
           </span>
@@ -187,71 +186,72 @@ export function CameraCard({ className = "", cameraId = "A01" }) {
       </div>
 
       {/* Bottom dock (tối giản) */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-        <div className="flex items-center gap-2 bg-white/12 backdrop-blur px-3 py-2 rounded-xl border border-white/10 shadow-lg">
-          {/* Mở/Tắt */}
-          <button
-            onClick={toggleStream}
-            className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold text-white ${
-              isStreaming
+      {showControls && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+          <div className="flex items-center gap-2 bg-white/12 backdrop-blur px-3 py-2 rounded-xl border border-white/10 shadow-lg">
+            {/* Mở/Tắt */}
+            <button
+              onClick={toggleStream}
+              className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold text-white ${isStreaming
                 ? "bg-slate-800/90 hover:bg-slate-900"
                 : "bg-sky-600 hover:bg-sky-700"
-            }`}
-            title={isStreaming ? "Tắt camera" : "Mở camera"}
-          >
-            {isStreaming ? (
-              <Pause className="w-4 h-4" />
-            ) : (
-              <Play className="w-4 h-4" />
-            )}
-            {isStreaming ? "Tắt" : "Mở"}
-          </button>
+                }`}
+              title={isStreaming ? "Tắt camera" : "Mở camera"}
+            >
+              {isStreaming ? (
+                <Pause className="w-4 h-4" />
+              ) : (
+                <Play className="w-4 h-4" />
+              )}
+              {isStreaming ? "Tắt" : "Mở"}
+            </button>
 
-          {/* Chụp ảnh */}
-          <button
-            onClick={capturePhoto}
-            disabled={!isStreaming}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-60"
-            title="Chụp ảnh"
-          >
-            <ImageIcon className="w-4 h-4" />
-            Chụp
-          </button>
+            {/* Chụp ảnh */}
+            <button
+              onClick={capturePhoto}
+              disabled={!isStreaming}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-60"
+              title="Chụp ảnh"
+            >
+              <ImageIcon className="w-4 h-4" />
+              Chụp
+            </button>
 
-          {/* Đổi camera trước/sau */}
-          <button
-            onClick={switchFacing}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold bg-white/90 hover:bg-white text-slate-900"
-            title="Đổi camera"
-          >
-            <RotateCcw className="w-4 h-4" />
-            Đổi
-          </button>
+            {/* Đổi camera trước/sau */}
+            <button
+              onClick={switchFacing}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold bg-white/90 hover:bg-white text-slate-900"
+              title="Đổi camera"
+            >
+              <RotateCcw className="w-4 h-4" />
+              Đổi
+            </button>
 
-          {/* Fit (Fill/Fit) */}
-          <button
-            onClick={() => setFit((f) => (f === "cover" ? "contain" : "cover"))}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold bg-white/90 hover:bg-white text-slate-900"
-            title="Chế độ hiển thị"
-          >
-            {fit === "cover" ? (
-              <Minimize2 className="w-4 h-4" />
-            ) : (
-              <Maximize2 className="w-4 h-4" />
-            )}
-            {fit === "cover" ? "Fit" : "Fill"}
-          </button>
+            {/* Fit (Fill/Fit) */}
+            <button
+              onClick={() => setFit((f) => (f === "cover" ? "contain" : "cover"))}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold bg-white/90 hover:bg-white text-slate-900"
+              title="Chế độ hiển thị"
+            >
+              {fit === "cover" ? (
+                <Minimize2 className="w-4 h-4" />
+              ) : (
+                <Maximize2 className="w-4 h-4" />
+              )}
+              {fit === "cover" ? "Fit" : "Fill"}
+            </button>
 
-          {/* Lưới (tuỳ chọn) */}
-          <button
-            onClick={() => setShowGrid((v) => !v)}
-            className="inline-flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm font-semibold bg-white/90 hover:bg-white text-slate-900"
-            title="Bật/tắt lưới 1/3"
-          >
-            <Grid3X3 className="w-4 h-4" />
-          </button>
+            {/* Lưới (tuỳ chọn) */}
+            <button
+              onClick={() => setShowGrid((v) => !v)}
+              className="inline-flex items-center gap-2 px-2.5 py-2 rounded-lg text-sm font-semibold bg-white/90 hover:bg-white text-slate-900"
+              title="Bật/tắt lưới 1/3"
+            >
+              <Grid3X3 className="w-4 h-4" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Hidden canvas */}
       <canvas ref={canvasRef} className="hidden" />
